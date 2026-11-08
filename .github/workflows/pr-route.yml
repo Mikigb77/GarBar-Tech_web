@@ -1,0 +1,33 @@
+name: PR route
+
+# Separate from CI so that editing a PR's title or text, which also fires `edited`, re-runs only
+# this check and not the build. `edited` covers moving a PR to another base branch.
+on:
+  pull_request:
+    branches: [dev, main]
+    types: [opened, synchronize, reopened, edited]
+
+permissions: {}
+
+concurrency:
+  group: pr-route-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  route:
+    name: PR route
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Feature PRs go into dev; only this repository's dev goes into main
+        env:
+          BASE: ${{ github.event.pull_request.base.ref }}
+          HEAD: ${{ github.event.pull_request.head.ref }}
+          SAME_REPOSITORY: ${{ github.event.pull_request.head.repo.id == github.event.repository.id }}
+        run: |
+          if [[ $BASE == dev || ( $BASE == main && $HEAD == dev && $SAME_REPOSITORY == true ) ]]; then
+            echo "Accepted: $HEAD -> $BASE"
+          else
+            echo "::error::Feature PRs must target dev. Only this repository's dev branch may target main."
+            exit 1
+          fi

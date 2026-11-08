@@ -22,8 +22,8 @@ Production accepts only the exact merge commit of a merged `dev` → `main` PR; 
 
 ## Protected branches
 
-`dev` and `main` only change through PRs. Both need green **Website checks** and **Container
-image** and resolved conversations; PRs into `dev` must also be up to date with it. Force pushes
+`dev` and `main` only change through PRs. Both need green **PR route**, **Website checks** and
+**Container image** and resolved conversations; PRs into `dev` must also be up to date with it. Force pushes
 and deletion are blocked, for admins too, and no review from another person is required. The
 protection is set by `infra/setup.sh` ([infra/DEPLOY.md](infra/DEPLOY.md)).
 

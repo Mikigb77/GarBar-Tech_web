@@ -247,7 +247,7 @@ else
     if [[ $branch == dev ]]; then strict=true; fi
     gh api --method PUT "repos/$FULL_NAME/branches/$branch/protection" --input - --silent <<JSON
 {
-  "required_status_checks": {"strict": $strict, "contexts": ["Website checks", "Container image"]},
+  "required_status_checks": {"strict": $strict, "contexts": ["PR route", "Website checks", "Container image"]},
   "enforce_admins": true,
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
@@ -260,7 +260,7 @@ else
   "allow_deletions": false
 }
 JSON
-    note "$branch only changes through PRs with green 'Website checks' and 'Container image'."
+    note "$branch only changes through PRs with green 'PR route', 'Website checks' and 'Container image'."
   done
 fi
 

@@ -3,8 +3,6 @@ name: CI
 on:
   pull_request:
     branches: [dev, main]
-    # `edited` re-runs the route check when a PR is moved to another base branch.
-    types: [opened, synchronize, reopened, edited, ready_for_review]
   push:
     branches: [dev]
   workflow_call:
@@ -29,18 +27,6 @@ jobs:
       INDEX_SITE: 'true'
       HOSTING_PROVIDER: google-cloud-run
     steps:
-      - name: Verify the pull request route
-        if: github.event_name == 'pull_request'
-        run: |
-          node --input-type=module <<'JS'
-          import assert from 'node:assert/strict';
-          import {readFileSync} from 'node:fs';
-          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
-          const pr = event.pull_request;
-          assert.ok(pr.base.ref === 'dev' || (pr.base.ref === 'main' && pr.head.ref === 'dev'
-            && pr.head.repo?.id === event.repository.id),
-            'Feature PRs must target dev. Only the same repository dev branch may target main.');
-          JS
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false

@@ -38,8 +38,8 @@ everything else itself:
 - **Deployer permissions:** Artifact Registry Writer on the image repository, Cloud Run Developer
   on this one service, and Service Account User on the runtime account. No project-wide roles.
 - **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch and
-  protects `dev` and `main`: changes only through PRs with green **Website checks** and
-  **Container image**, resolved conversations, no force pushes or deletion, admins included. No
+  protects `dev` and `main`: changes only through PRs with green **PR route**, **Website
+  checks** and **Container image**, resolved conversations, no force pushes or deletion, admins included. No
   review from another person is required. `SKIP_BRANCH_PROTECTION=1` leaves protection alone.
   It turns on deleting a branch when its PR merges, and deletes leftover branches whose work is
   already merged or whose PR was closed, so only `dev` and `main` remain. Branches with an open
@@ -62,12 +62,16 @@ stops at its first step and says to run the setup script.
 
 **`ci.yml`** runs on every PR into `dev` or `main` and on every push to `dev`:
 
-- **Website checks:** the PR route (feature PRs go into `dev`; only this repository's `dev` goes
-  into `main`), TypeScript, the edge Worker tests, the production build and the site tests.
+- **Website checks:** shellcheck on `infra/`, TypeScript, the edge Worker tests, the production
+  build and the site tests.
 - **Container image:** builds the Dockerfile, runs the image as Cloud Run does and tests all 13
   pages, their assets, the sitemap and the headers against it.
 
 A newer push to a PR cancels its older run.
+
+**`pr-route.yml`** (**PR route**) fails a PR that isn't a feature PR into `dev` or this
+repository's `dev` into `main`. It is its own workflow so that editing a PR's text re-runs only
+this check, while moving a PR to another base branch still re-checks it.
 
 **`deploy.yml`** runs when a `dev` → `main` PR is merged, and only then:
 
