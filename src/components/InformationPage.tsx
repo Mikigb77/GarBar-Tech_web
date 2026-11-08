@@ -1,4 +1,4 @@
-import { company, copy, pagePath, taskflowUrl, type Locale } from "@/content/site";
+import { company, copy, lucidSagaUrl, pagePath, taskflowUrl, type Locale } from "@/content/site";
 import { Arrow } from "./Brand";
 
 export function InformationPage({ locale }: { locale: Locale }) {
@@ -50,7 +50,7 @@ export function InformationPage({ locale }: { locale: Locale }) {
             <Arrow diagonal />
           </a>
           <a
-            href={`https://lucidsaga.garbar.tech/${locale}`}
+            href={lucidSagaUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
           >

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { copy, routeInfo } from "@/content/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { Motion } from "@/components/Motion";
 import "../globals.css";
 
 const manrope = localFont({
@@ -26,7 +27,9 @@ export default async function Layout({
   const t = copy[route.locale];
   return (
     <html lang={route.locale} className={manrope.variable}>
-      <body id="top">
+      <body id="top" data-section={route.section}>
+        <Motion />
+        <div className="scroll-progress" aria-hidden="true" />
         <a className="skip-link" href="#main">
           {t.skip}
         </a>
