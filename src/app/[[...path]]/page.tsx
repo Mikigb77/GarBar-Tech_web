@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CompanyPage } from "@/components/CompanyPage";
 import { InformationPage } from "@/components/InformationPage";
+import { PolicyPage } from "@/components/PolicyPage";
+import { policies } from "@/content/policies";
 import { company, copy, locales, routeInfo, pagePath, siteUrl, indexSite } from "@/content/site";
 
 export const dynamicParams = false;
@@ -13,6 +15,7 @@ export function generateStaticParams() {
       { path: [locale] },
       { path: [locale, "legal"] },
       { path: [locale, "privacy"] },
+      { path: [locale, "terms"] },
     ]),
   ];
 }
@@ -28,11 +31,17 @@ export async function generateMetadata({
   const title =
     route.section === "home"
       ? `${company.brand} — ${t.footer.statement.replace("\n", " ")}`
-      : `${route.section === "legal" ? t.footer.legal : t.footer.privacy} — ${company.brand}`;
+      : `${route.section === "legal" ? t.footer.legal : policies[route.locale][route.section].title} — ${company.brand}`;
+  const description =
+    route.section === "home"
+      ? t.meta
+      : route.section === "legal"
+        ? t.legal.intro
+        : policies[route.locale][route.section].intro;
   return {
     metadataBase: new URL(siteUrl),
     title,
-    description: t.meta,
+    description,
     applicationName: company.brand,
     alternates: {
       canonical: pagePath(route.locale, route.section),
@@ -44,7 +53,7 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       title,
-      description: t.meta,
+      description,
       siteName: company.brand,
       url: pagePath(route.locale, route.section),
       locale: { en: "en_GB", es: "es_ES", ca: "ca_ES" }[route.locale],
@@ -53,7 +62,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title,
-      description: t.meta,
+      description,
       images: ["/images/share.png"],
     },
     icons: { icon: "/favicon.svg", apple: "/images/apple-icon.png" },
@@ -63,8 +72,9 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Promise<{ path?: string[] }> }) {
   const route = routeInfo((await params).path);
   if (!route) notFound();
-  if (route.section !== "home")
-    return <InformationPage locale={route.locale} privacy={route.section === "privacy"} />;
+  if (route.section === "legal") return <InformationPage locale={route.locale} />;
+  if (route.section === "privacy" || route.section === "terms")
+    return <PolicyPage locale={route.locale} kind={route.section} />;
   const organization = {
     "@context": "https://schema.org",
     "@type": "Organization",

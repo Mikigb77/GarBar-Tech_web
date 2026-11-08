@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Locale, Section } from "@/content/site";
-import { BrandMark, Arrow } from "./Brand";
+import { BrandLockup, Arrow } from "./Brand";
+import brand from "@/content/brand.json";
 
 type Labels = { about: string; projects: string; contact: string; menu: string; language: string };
 export function Header({
@@ -31,11 +32,8 @@ export function Header({
   return (
     <header className="site-header">
       <div className="header-inner">
-        <a href={home} className="brand" aria-label="GARBAR IN-TEC">
-          <BrandMark />
-          <span>
-            garbar<span className="brand-sub">in-tec</span>
-          </span>
+        <a href={home} className="brand" aria-label={brand.name}>
+          <BrandLockup />
         </a>
         <nav className="desktop-nav" aria-label={labels.menu}>
           <a href={`${home}#company`}>{labels.about}</a>

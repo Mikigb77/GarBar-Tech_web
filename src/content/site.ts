@@ -1,9 +1,11 @@
+import brand from "./brand.json";
+
 export const locales = ["en", "es", "ca"] as const;
 export type Locale = (typeof locales)[number];
-export type Section = "home" | "legal" | "privacy";
+export type Section = "home" | "legal" | "privacy" | "terms";
 
 export const company = {
-  brand: "GARBAR IN-TEC",
+  brand: brand.name,
   name: "GARBAR, IN-TEC, S.L.",
   taxId: "B56760374",
   address: "Carrer Sant Antoni Mª Claret, 24, 3ª planta, 08037 Barcelona, España",
@@ -17,7 +19,7 @@ export const siteUrl = (
 export const indexSite = process.env.INDEX_SITE === "true";
 
 const en = {
-  meta: "Independent thinking. Thoughtful technology. Meet GARBAR IN-TEC, the Barcelona company building TaskFlow and Lucid Saga.",
+  meta: "Independent thinking. Thoughtful technology. Meet GarBar, the Barcelona company building TaskFlow and Lucid Saga.",
   skip: "Skip to content",
   nav: {
     about: "The company",
@@ -41,7 +43,7 @@ const en = {
     label: "The company",
     title: "Curiosity starts it.",
     accent: "Care makes it real.",
-    lead: "We’re GARBAR IN-TEC. We bring software, artificial intelligence and thoughtful design together to make ideas useful.",
+    lead: "We’re GarBar. We bring software, artificial intelligence and thoughtful design together to make ideas useful.",
     body: "Some ideas help us make more of the everyday. Others open up entirely new worlds. We make room for both, developing our own products from the first question to the details that make them feel right.",
     note: "Independent thinking. Made in Barcelona.",
   },
@@ -119,6 +121,7 @@ const en = {
     information: "Information",
     legal: "Company details",
     privacy: "Privacy",
+    terms: "Terms & conditions",
     rights: "All rights reserved.",
     back: "Back to top",
   },
@@ -136,32 +139,6 @@ const en = {
       "TaskFlow and Lucid Saga have their own websites, support contacts, terms and privacy information. Please refer to the relevant product website for information about its services.",
     home: "Back to the company",
   },
-  privacy: {
-    label: "Privacy",
-    title: "A simple website.\nA clear explanation.",
-    intro:
-      "This page explains the information handled when you visit the GARBAR IN-TEC company website. Each of our products has its own privacy policy.",
-    sections: [
-      {
-        title: "Who is responsible",
-        body: "GARBAR, IN-TEC, S.L. is responsible for this company website. Our company details are linked below. For privacy enquiries, write to info@garbar.tech.",
-      },
-      {
-        title: "Visiting this website",
-        body: "Our hosting services process technical connection information, such as IP addresses, requested pages and browser information, to deliver and protect the website. These company pages do not include advertising trackers, analytics scripts or a contact form, and do not set advertising or analytics cookies.",
-      },
-      {
-        title: "When you email us",
-        body: "If you choose to contact us, we receive your email address and the information you include. We use it to respond to your request and manage the resulting conversation. Please only send the information needed for your enquiry. We keep correspondence for as long as needed to handle it and meet any applicable obligations.",
-      },
-      {
-        title: "Your privacy rights",
-        body: "You can contact info@garbar.tech to ask about your personal data or exercise the rights that apply, including access, correction, deletion, objection, restriction and portability. You can also contact the Spanish Data Protection Agency (AEPD).",
-      },
-    ],
-    authority: "Privacy rights at the AEPD",
-    updated: "Updated 8 November 2026",
-  },
   notFound: {
     title: "That idea isn’t here.",
     body: "We couldn’t find this page. Head back to the company and explore what we’re building.",
@@ -171,7 +148,7 @@ const en = {
 
 type Copy = typeof en;
 const es: Copy = {
-  meta: "Ideas propias. Tecnología con sentido. Descubre GARBAR IN-TEC, la empresa de Barcelona que desarrolla TaskFlow y Lucid Saga.",
+  meta: "Ideas propias. Tecnología con sentido. Descubre GarBar, la empresa de Barcelona que desarrolla TaskFlow y Lucid Saga.",
   skip: "Saltar al contenido",
   nav: {
     about: "La empresa",
@@ -195,7 +172,7 @@ const es: Copy = {
     label: "La empresa",
     title: "La curiosidad inicia.",
     accent: "El cuidado da forma.",
-    lead: "Somos GARBAR IN-TEC. Unimos software, inteligencia artificial y diseño para convertir ideas en algo útil.",
+    lead: "Somos GarBar. Unimos software, inteligencia artificial y diseño para convertir ideas en algo útil.",
     body: "Algunas ideas nos ayudan a disfrutar más del día a día. Otras abren mundos completamente nuevos. Damos espacio a ambas, desarrollando nuestros propios productos desde la primera pregunta hasta los detalles que marcan la diferencia.",
     note: "Ideas propias. Desde Barcelona.",
   },
@@ -274,6 +251,7 @@ const es: Copy = {
     information: "Información",
     legal: "Datos de la empresa",
     privacy: "Privacidad",
+    terms: "Términos y condiciones",
     rights: "Todos los derechos reservados.",
     back: "Volver arriba",
   },
@@ -291,32 +269,6 @@ const es: Copy = {
       "TaskFlow y Lucid Saga cuentan con sus propias webs, contactos de soporte, condiciones e información de privacidad. Consulta la web del producto correspondiente para conocer sus servicios.",
     home: "Volver a la empresa",
   },
-  privacy: {
-    label: "Privacidad",
-    title: "Una web sencilla.\nUna explicación clara.",
-    intro:
-      "Esta página explica la información que se trata cuando visitas la web corporativa de GARBAR IN-TEC. Cada producto tiene su propia política de privacidad.",
-    sections: [
-      {
-        title: "Quién es responsable",
-        body: "GARBAR, IN-TEC, S.L. es la responsable de esta web corporativa. Puedes consultar los datos de la empresa en el enlace inferior. Para consultas de privacidad, escribe a info@garbar.tech.",
-      },
-      {
-        title: "Al visitar esta web",
-        body: "Los servicios de alojamiento procesan información técnica de conexión, como direcciones IP, páginas solicitadas e información del navegador, para servir y proteger la web. Estas páginas corporativas no incluyen rastreadores publicitarios, scripts de analítica ni formularios de contacto, y no instalan cookies de publicidad o analítica.",
-      },
-      {
-        title: "Cuando nos escribes",
-        body: "Si decides contactarnos, recibimos tu dirección de correo y la información que incluyas. La utilizamos para responder a tu consulta y gestionar la conversación. Envía únicamente la información necesaria. Conservamos la correspondencia durante el tiempo necesario para atenderla y cumplir las obligaciones aplicables.",
-      },
-      {
-        title: "Tus derechos de privacidad",
-        body: "Puedes escribir a info@garbar.tech para preguntar por tus datos o ejercer los derechos que correspondan, incluidos acceso, rectificación, supresión, oposición, limitación y portabilidad. También puedes dirigirte a la Agencia Española de Protección de Datos (AEPD).",
-      },
-    ],
-    authority: "Tus derechos en la AEPD",
-    updated: "Actualizado el 8 de noviembre de 2026",
-  },
   notFound: {
     title: "Esa idea no está aquí.",
     body: "No encontramos esta página. Vuelve a la empresa y descubre lo que estamos creando.",
@@ -325,7 +277,7 @@ const es: Copy = {
 };
 
 const ca: Copy = {
-  meta: "Idees pròpies. Tecnologia amb sentit. Descobreix GARBAR IN-TEC, l’empresa de Barcelona que desenvolupa TaskFlow i Lucid Saga.",
+  meta: "Idees pròpies. Tecnologia amb sentit. Descobreix GarBar, l’empresa de Barcelona que desenvolupa TaskFlow i Lucid Saga.",
   skip: "Ves al contingut",
   nav: {
     about: "L’empresa",
@@ -349,7 +301,7 @@ const ca: Copy = {
     label: "L’empresa",
     title: "La curiositat inicia.",
     accent: "La cura dona forma.",
-    lead: "Som GARBAR IN-TEC. Unim programari, intel·ligència artificial i disseny per convertir idees en alguna cosa útil.",
+    lead: "Som GarBar. Unim programari, intel·ligència artificial i disseny per convertir idees en alguna cosa útil.",
     body: "Algunes idees ens ajuden a gaudir més del dia a dia. D’altres obren mons completament nous. Donem espai a totes dues, desenvolupant els nostres productes des de la primera pregunta fins als detalls que marquen la diferència.",
     note: "Idees pròpies. Des de Barcelona.",
   },
@@ -428,6 +380,7 @@ const ca: Copy = {
     information: "Informació",
     legal: "Dades de l’empresa",
     privacy: "Privacitat",
+    terms: "Termes i condicions",
     rights: "Tots els drets reservats.",
     back: "Torna a dalt",
   },
@@ -445,32 +398,6 @@ const ca: Copy = {
       "TaskFlow i Lucid Saga tenen els seus propis webs, contactes de suport, condicions i informació de privacitat. Consulta el web del producte corresponent per conèixer els seus serveis.",
     home: "Torna a l’empresa",
   },
-  privacy: {
-    label: "Privacitat",
-    title: "Un web senzill.\nUna explicació clara.",
-    intro:
-      "Aquesta pàgina explica la informació que es tracta quan visites el web corporatiu de GARBAR IN-TEC. Cada producte té la seva pròpia política de privacitat.",
-    sections: [
-      {
-        title: "Qui n’és responsable",
-        body: "GARBAR, IN-TEC, S.L. és la responsable d’aquest web corporatiu. Pots consultar les dades de l’empresa a l’enllaç inferior. Per a consultes de privacitat, escriu a info@garbar.tech.",
-      },
-      {
-        title: "Quan visites aquest web",
-        body: "Els serveis d’allotjament processen informació tècnica de connexió, com adreces IP, pàgines sol·licitades i informació del navegador, per servir i protegir el web. Aquestes pàgines corporatives no inclouen rastrejadors publicitaris, scripts d’analítica ni formularis de contacte, i no instal·len galetes de publicitat o analítica.",
-      },
-      {
-        title: "Quan ens escrius",
-        body: "Si decideixes contactar-nos, rebem la teva adreça de correu i la informació que hi incloguis. La fem servir per respondre la consulta i gestionar la conversa. Envia només la informació necessària. Conservem la correspondència durant el temps necessari per atendre-la i complir les obligacions aplicables.",
-      },
-      {
-        title: "Els teus drets de privacitat",
-        body: "Pots escriure a info@garbar.tech per preguntar sobre les teves dades o exercir els drets que corresponguin, incloent-hi accés, rectificació, supressió, oposició, limitació i portabilitat. També pots adreçar-te a l’Agència Espanyola de Protecció de Dades (AEPD).",
-      },
-    ],
-    authority: "Els teus drets a l’AEPD",
-    updated: "Actualitzat el 8 de novembre de 2026",
-  },
   notFound: {
     title: "Aquesta idea no és aquí.",
     body: "No hem trobat aquesta pàgina. Torna a l’empresa i descobreix què estem creant.",
@@ -485,7 +412,8 @@ export function routeInfo(path: string[] = []): { locale: Locale; section: Secti
   const locale = path[0] as Locale;
   if (!locales.includes(locale) || path.length > 2) return null;
   const section = path[1] || "home";
-  if (section !== "home" && section !== "legal" && section !== "privacy") return null;
+  if (section !== "home" && section !== "legal" && section !== "privacy" && section !== "terms")
+    return null;
   return { locale, section };
 }
 

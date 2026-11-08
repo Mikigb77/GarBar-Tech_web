@@ -1,12 +1,27 @@
+import brand from "@/content/brand.json";
+
 export function BrandMark({ className = "" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <path
-        d="M22 4H12a8 8 0 0 0-8 8v16a8 8 0 0 0 8 8h16a8 8 0 0 0 8-8V18H20v8h8v2H12V12h10V4Z"
-        fill="currentColor"
-      />
-      <path d="M28 4h8v8h-8z" fill="var(--accent, #f2633c)" />
+    <svg
+      className={className}
+      viewBox={brand.viewBox}
+      fill="none"
+      strokeWidth={brand.strokeWidth}
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={brand.gPath} stroke="currentColor" />
+      <path d={brand.bPath} stroke="var(--accent, #f0643d)" />
     </svg>
+  );
+}
+
+export function BrandLockup() {
+  return (
+    <>
+      <BrandMark />
+      <span>{brand.name}</span>
+    </>
   );
 }
 

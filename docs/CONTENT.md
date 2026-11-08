@@ -5,6 +5,11 @@ products, TaskFlow and Lucid Saga, as an innovation and technology company. Clie
 services are outside this site's current brief. SES Systems is not presented as a company-owned
 product.
 
+The public brand is **GarBar**, with capital G and B, as specified by the owner. The GB monogram
+uses a shared stem with an orange B. The registered legal entity remains GARBAR, IN-TEC, S.L.
+The original G artwork is preserved in `design/brand/archive/g-mark-v1/` at the owner's request.
+Privacy and terms are adapted from TaskFlow to this company's website: see `docs/LEGAL.md`.
+
 ## Sources
 
 - Registered name, NIF, registered address and commercial-register entry: the company records

@@ -1,5 +1,5 @@
 import { company, copy, pagePath, type Locale } from "@/content/site";
-import { Arrow, BrandMark } from "./Brand";
+import { Arrow, BrandLockup } from "./Brand";
 
 export function Footer({ locale }: { locale: Locale }) {
   const t = copy[locale];
@@ -9,10 +9,7 @@ export function Footer({ locale }: { locale: Locale }) {
       <div className="container footer-grid">
         <div className="footer-brand">
           <a href={home} className="brand" aria-label={company.brand}>
-            <BrandMark />
-            <span>
-              garbar<span className="brand-sub">in-tec</span>
-            </span>
+            <BrandLockup />
           </a>
           <p>{t.footer.statement}</p>
           <span className="footer-location">Barcelona · 41°23′ N 2°10′ E</span>
@@ -46,6 +43,7 @@ export function Footer({ locale }: { locale: Locale }) {
           <h2>{t.footer.information}</h2>
           <a href={pagePath(locale, "legal")}>{t.footer.legal}</a>
           <a href={pagePath(locale, "privacy")}>{t.footer.privacy}</a>
+          <a href={pagePath(locale, "terms")}>{t.footer.terms}</a>
         </nav>
       </div>
       <div className="container footer-bottom">
