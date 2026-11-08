@@ -1,4 +1,4 @@
-import { company, copy, pagePath, type Locale } from "@/content/site";
+import { company, copy, pagePath, taskflowUrl, type Locale } from "@/content/site";
 import { Arrow } from "./Brand";
 
 export function InformationPage({ locale }: { locale: Locale }) {
@@ -42,7 +42,7 @@ export function InformationPage({ locale }: { locale: Locale }) {
         <p>{t.legal.productBody}</p>
         <div className="information-product-links">
           <a
-            href={`https://taskflow.garbar.tech/${locale}/`}
+            href={taskflowUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
           >

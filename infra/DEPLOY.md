@@ -46,6 +46,11 @@ Its exact origin and custom-domain routing are recorded in `edge/`. `www.garbar.
 the apex domain while preserving paths and query strings. Cloudflare manages the DNS and TLS
 certificates for those two Worker custom domains.
 
+The deployed origin is `https://garbar-web-73xqjacdbq-no.a.run.app`. Worker code and its two
+custom-domain routes are in `edge/worker.js` and `edge/wrangler.jsonc`. Its `workers.dev` and
+preview endpoints are disabled. Subsequent Cloud Run revisions retain this service URL, so
+ordinary website deployments do not require editing the Worker.
+
 The existing TaskFlow, Lucid Saga and mail records are separate from this website's routes.
 The original G logo remains in `design/brand/archive/g-mark-v1/`.
 

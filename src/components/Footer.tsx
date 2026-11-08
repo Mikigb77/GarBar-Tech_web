@@ -1,4 +1,4 @@
-import { company, copy, pagePath, type Locale } from "@/content/site";
+import { company, copy, pagePath, taskflowUrl, type Locale } from "@/content/site";
 import { Arrow, BrandLockup } from "./Brand";
 
 export function Footer({ locale }: { locale: Locale }) {
@@ -23,7 +23,7 @@ export function Footer({ locale }: { locale: Locale }) {
         <nav aria-label={t.footer.products}>
           <h2>{t.footer.products}</h2>
           <a
-            href={`https://taskflow.garbar.tech/${locale}/`}
+            href={taskflowUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
           >

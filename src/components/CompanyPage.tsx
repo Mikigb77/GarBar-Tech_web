@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { company, copy, type Locale } from "@/content/site";
+import { company, copy, taskflowUrl, type Locale } from "@/content/site";
 import { Arrow, BrandMark, Spark, TaskMark } from "./Brand";
 import { CopyEmail } from "./CopyEmail";
 
@@ -196,7 +196,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
             </div>
             <a
               className="project-link"
-              href={`https://taskflow.garbar.tech/${locale}/`}
+              href={taskflowUrl(locale)}
               target="_blank"
               rel="noopener noreferrer"
             >

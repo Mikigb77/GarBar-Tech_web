@@ -19,6 +19,11 @@ export const siteUrl = (
 export const indexSite = process.env.INDEX_SITE === "true";
 export const hostingProvider = process.env.HOSTING_PROVIDER || "sites";
 
+export function taskflowUrl(locale: Locale) {
+  const path = locale === "en" ? "/?lang=en" : `/${locale}/`;
+  return `https://taskflow.garbar.tech${path}`;
+}
+
 const en = {
   meta: "Independent thinking. Thoughtful technology. Meet GarBar, the Barcelona company building TaskFlow and Lucid Saga.",
   skip: "Skip to content",
