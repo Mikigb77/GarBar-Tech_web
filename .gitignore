@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.sites-checkout/
+.sites-checkout-*/
+.sites-runtime/
+.openai/*.local.*
+*.tsbuildinfo
+next-env.d.ts
+.env*
+gha-creds-*.json
+npm-debug.log*
+.DS_Store

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
+  "name": "garbar-web-edge",
+  "main": "worker.js",
+  "account_id": "406695dde171ecf826e9f6b089cf2dc0",
+  "compatibility_date": "2026-11-08",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "garbar.tech", "custom_domain": true },
+    { "pattern": "www.garbar.tech", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}

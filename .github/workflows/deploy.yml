@@ -1,0 +1,212 @@
+name: Deploy production
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: garbar-production
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Verify merged dev release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      approved: ${{ steps.release.outputs.approved }}
+    steps:
+      - name: Check the deploy settings exist
+        env:
+          GCP_PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+          GCP_REGION: ${{ vars.GCP_REGION }}
+          GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          GCP_DEPLOY_SERVICE_ACCOUNT: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+          GCP_RUNTIME_SERVICE_ACCOUNT: ${{ vars.GCP_RUNTIME_SERVICE_ACCOUNT }}
+          GCP_ARTIFACT_REPOSITORY: ${{ vars.GCP_ARTIFACT_REPOSITORY }}
+          CLOUD_RUN_SERVICE: ${{ vars.CLOUD_RUN_SERVICE }}
+        shell: bash
+        run: |
+          missing=()
+          for name in GCP_PROJECT_ID GCP_REGION GCP_WORKLOAD_IDENTITY_PROVIDER \
+            GCP_DEPLOY_SERVICE_ACCOUNT GCP_RUNTIME_SERVICE_ACCOUNT GCP_ARTIFACT_REPOSITORY \
+            CLOUD_RUN_SERVICE; do
+            [[ -n "${!name}" ]] || missing+=("$name")
+          done
+          if (( ${#missing[@]} )); then
+            echo "::error::Missing repository variables: ${missing[*]}. Run 'bash infra/setup.sh' once, in WSL."
+            exit 1
+          fi
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        id: release
+        with:
+          script: |
+            // GitHub can take a few seconds to link a fresh merge commit to its PR.
+            let release;
+            for (let attempt = 1; attempt <= 6 && !release; attempt++) {
+              const {data: prs} = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+                ...context.repo, commit_sha: context.sha
+              });
+              release = prs.find(pr => pr.merged_at && pr.base.ref === 'main'
+                && pr.head.ref === 'dev' && pr.head.repo?.id === context.payload.repository.id
+                && pr.merge_commit_sha === context.sha);
+              if (!release && attempt < 6) await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+            if (!release) {
+              core.setFailed('Production only deploys a merged dev -> main pull request. Direct pushes do not deploy.');
+              return;
+            }
+            const {data: main} = await github.rest.git.getRef({...context.repo, ref: 'heads/main'});
+            if (main.object.sha !== context.sha) {
+              core.notice('A newer main commit exists; skipping this older release.');
+              core.setOutput('approved', 'false');
+              return;
+            }
+            core.info(`Deploying merged release PR #${release.number}: ${context.sha}`);
+            core.setOutput('approved', 'true');
+
+  checks:
+    name: Release checks
+    needs: release
+    if: needs.release.outputs.approved == 'true'
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  deploy:
+    name: Deploy Cloud Run
+    needs: [release, checks]
+    if: needs.release.outputs.approved == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://garbar.tech
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+      REGION: ${{ vars.GCP_REGION }}
+      SERVICE: ${{ vars.CLOUD_RUN_SERVICE }}
+      RUNTIME_SERVICE_ACCOUNT: ${{ vars.GCP_RUNTIME_SERVICE_ACCOUNT }}
+      IMAGE: ${{ vars.GCP_ARTIFACT_REPOSITORY }}/web:${{ github.sha }}
+      CLOUDSDK_CORE_DISABLE_PROMPTS: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Build the production container
+        run: >-
+          docker build --build-arg SITE_URL=https://garbar.tech --build-arg INDEX_SITE=true
+          --tag "$IMAGE" .
+      # Authenticate after building so the short-lived credentials are fresh for deployment.
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Push the image and resolve its immutable digest
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          docker push "$IMAGE"
+          digest=$(gcloud artifacts docker images describe "$IMAGE" \
+            --project="$PROJECT_ID" --format='value(image_summary.fully_qualified_digest)')
+          [[ "$digest" =~ @sha256:[a-f0-9]{64}$ ]]
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+      - name: Remember the revision serving now
+        id: previous
+        shell: bash
+        run: |
+          set -euo pipefail
+          revision=$(gcloud run services describe "$SERVICE" --project="$PROJECT_ID" \
+            --region="$REGION" --format='value(status.latestReadyRevisionName)')
+          echo "Serving before this deploy: ${revision:-none}"
+          echo "revision=$revision" >> "$GITHUB_OUTPUT"
+      - name: Deploy the image with scale to zero
+        id: deploy
+        shell: bash
+        env:
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+        run: |
+          set -euo pipefail
+          gcloud run deploy "$SERVICE" --image="$IMAGE_DIGEST" \
+            --project="$PROJECT_ID" --region="$REGION" \
+            --service-account="$RUNTIME_SERVICE_ACCOUNT" \
+            --port=8080 --cpu=1 --memory=256Mi --concurrency=80 --timeout=30s \
+            --cpu-throttling --scaling=auto --min=0 --max=3 \
+            --update-labels="source-commit=$GITHUB_SHA,managed-by=github-actions" --quiet
+          # A rollback pins traffic to one revision; send it back to the newest one.
+          gcloud run services update-traffic "$SERVICE" --to-latest \
+            --project="$PROJECT_ID" --region="$REGION" --quiet
+      - name: Verify the service settings
+        id: settings
+        shell: bash
+        run: |
+          set -euo pipefail
+          gcloud run services describe "$SERVICE" --project="$PROJECT_ID" --region="$REGION" \
+            --format=json > "$RUNNER_TEMP/garbar-service.json"
+          python3 - "$RUNNER_TEMP/garbar-service.json" <<'PY'
+          import json, os, sys
+          service = json.load(open(sys.argv[1]))
+          annotations = service['metadata'].get('annotations', {})
+          template = service['spec']['template']['metadata'].get('annotations', {})
+          def scale(service_key, template_key):
+              value = annotations.get(service_key, template.get(template_key))
+              return None if value is None else int(value)
+          minimum = scale('run.googleapis.com/minScale', 'autoscaling.knative.dev/minScale') or 0
+          maximum = scale('run.googleapis.com/maxScale', 'autoscaling.knative.dev/maxScale')
+          assert minimum == 0, f'minimum instances is {minimum}, expected 0'
+          assert maximum in (None, 3), f'maximum instances is {maximum}, expected 3'
+          if maximum is None:
+              print('::warning::Cloud Run did not report a maximum; --max=3 was requested.')
+          assert annotations.get('run.googleapis.com/scalingMode', 'automatic') == 'automatic'
+          assert service['metadata']['labels']['source-commit'] == os.environ['GITHUB_SHA']
+          status = service['status']
+          latest = status['latestReadyRevisionName']
+          assert latest == status['latestCreatedRevisionName'], 'the new revision is not ready'
+          serving = [t for t in status['traffic'] if t.get('percent')]
+          assert [(t['revisionName'], t['percent']) for t in serving] == [(latest, 100)], serving
+          print(f'Verified {latest}: this commit, automatic scaling 0-3, 100% of traffic.')
+          PY
+          url=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["status"]["url"])' \
+            "$RUNNER_TEMP/garbar-service.json")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Test every page on the new revision
+        env:
+          ORIGIN: ${{ steps.settings.outputs.url }}
+        run: node scripts/verify-site.mjs "$ORIGIN"
+      - name: Roll back to the previous revision
+        if: >-
+          failure() && steps.deploy.outcome != 'skipped'
+          && steps.previous.outputs.revision != ''
+        shell: bash
+        env:
+          PREVIOUS: ${{ steps.previous.outputs.revision }}
+        run: |
+          set -euo pipefail
+          gcloud run services update-traffic "$SERVICE" --to-revisions="$PREVIOUS=100" \
+            --project="$PROJECT_ID" --region="$REGION" --quiet
+          echo "::error::The deploy failed its checks. Traffic is back on $PREVIOUS."
+          echo "Rolled back to $PREVIOUS." >> "$GITHUB_STEP_SUMMARY"
+      - name: Test the public website through Cloudflare
+        run: npm run smoke
+      - name: Record the release
+        shell: bash
+        run: |
+          echo "Deployed https://garbar.tech from commit $GITHUB_SHA." >> "$GITHUB_STEP_SUMMARY"
+          echo "Cloud Run: $REGION, automatic scaling 0–3 instances." >> "$GITHUB_STEP_SUMMARY"

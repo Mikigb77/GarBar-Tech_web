@@ -1,0 +1,80 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  # A new push to a PR replaces its running checks. Release checks called from the deploy are
+  # grouped by commit, so they never cancel one another or a PR's checks.
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  website:
+    name: Website checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://garbar.tech
+      INDEX_SITE: 'true'
+      HOSTING_PROVIDER: google-cloud-run
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Lint the setup and deploy scripts
+        run: shellcheck -x infra/*.sh
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Check TypeScript and route types
+        run: npm run typecheck
+      - name: Test edge routing and upstream failures
+        run: npm run test:edge
+      - name: Build the public production website
+        run: npm run build
+      - name: Test pages, assets, privacy, SEO and HTTP behavior
+        run: npm run test:site
+
+  container:
+    name: Container image
+    # The deploy builds, runs and checks the image itself, so release checks skip this job.
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+      - name: Build the production image from the Dockerfile
+        run: >-
+          docker build --build-arg SITE_URL=https://garbar.tech --build-arg INDEX_SITE=true
+          --tag garbar-web:ci .
+      - name: Run the image as Cloud Run does and test every page
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --detach --name garbar-web --publish 127.0.0.1:8080:8080 --env PORT=8080 \
+            garbar-web:ci
+          for _ in $(seq 1 30); do
+            curl --fail --silent --output /dev/null http://127.0.0.1:8080/en/ && break
+            sleep 1
+          done
+          node scripts/verify-site.mjs http://127.0.0.1:8080
+      - name: Show the container log
+        if: failure()
+        run: docker logs garbar-web || true
