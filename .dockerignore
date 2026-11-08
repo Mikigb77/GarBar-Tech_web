@@ -1,0 +1,14 @@
+.git
+.github
+.openai
+.next
+.sites-*
+node_modules
+out
+design
+docs
+edge
+.env*
+*.tar.gz
+*.tsbuildinfo
+npm-debug.log*

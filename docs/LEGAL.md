@@ -12,7 +12,9 @@ checkout, app database, recording, AI submission, analytics or advertising integ
 languages, local fonts and a user-initiated clipboard button. Do not copy TaskFlow's subscription,
 voice, Neon, RevenueCat, Turnstile or app-account clauses into this site's notice.
 
-The private publication uses OpenAI Sites, its sign-in gate and Cloudflare delivery infrastructure.
+The public deployment uses Google Cloud Run in Madrid and Cloudflare for DNS, HTTPS delivery and
+connection protection. Its build selects `HOSTING_PROVIDER=google-cloud-run`. The separate private
+preview uses OpenAI Sites, its sign-in gate and Cloudflare delivery infrastructure.
 Google Workspace is the company email provider documented in TaskFlow's company/legal sources.
 The notice identifies those functions without claiming that all providers are EU-only or that
 GarBar receives ChatGPT passwords. Product policies and support remain on their product sites.

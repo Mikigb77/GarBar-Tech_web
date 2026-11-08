@@ -17,6 +17,7 @@ export const siteUrl = (
   process.env.SITE_URL || "https://garbar-intec.tech-garbar.chatgpt.site"
 ).replace(/\/$/, "");
 export const indexSite = process.env.INDEX_SITE === "true";
+export const hostingProvider = process.env.HOSTING_PROVIDER || "sites";
 
 const en = {
   meta: "Independent thinking. Thoughtful technology. Meet GarBar, the Barcelona company building TaskFlow and Lucid Saga.",

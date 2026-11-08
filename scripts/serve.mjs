@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../out/", import.meta.url));
 const port = Number(process.env.PORT || 3107);
+const host = process.env.HOST || "127.0.0.1";
 const types = {
   ".html": "text/html; charset=utf-8",
   ".css": "text/css; charset=utf-8",
@@ -50,6 +51,11 @@ createServer(async (request, response) => {
       "Content-Length": body.length,
       "X-Content-Type-Options": "nosniff",
       "Referrer-Policy": "strict-origin-when-cross-origin",
+      "X-Frame-Options": "DENY",
+      "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+      "Cache-Control": url.pathname.startsWith("/_next/static/")
+        ? "public, max-age=31536000, immutable"
+        : "public, max-age=0, must-revalidate",
     });
     response.end(request.method === "HEAD" ? undefined : body);
   } catch {
@@ -60,4 +66,4 @@ createServer(async (request, response) => {
         : await readFile(resolve(root, "404.html")).catch(() => "Not found"),
     );
   }
-}).listen(port, "127.0.0.1", () => console.log(`Local: http://127.0.0.1:${port}`));
+}).listen(port, host, () => console.log(`Listening: http://${host}:${port}`));

@@ -41,14 +41,18 @@ Both products are presented as in development and coming soon to Android.
 
 ## Publishing
 
-The private Sites publication is identified by `.openai/hosting.json`; its static directory is
+The public website is deployed to Cloud Run in the `garbar-tech` project, with Cloudflare routing
+`garbar.tech` to it. It automatically scales to zero when idle, with at most three instances.
+Build and deployment instructions: [infra/DEPLOY.md](infra/DEPLOY.md).
+
+The separate private Sites preview is identified by `.openai/hosting.json`; its static directory is
 `out`. Website source remains in this repository. The Sites source workflow commits and pushes
 the matching source to its managed repository without replacing this repository's GitHub origin.
 
-`SITE_URL` controls canonical URLs and the sitemap at build time. It defaults to the private Sites
-address. Search indexing is disabled by default. For an intentional public launch on a company
-domain, build with `SITE_URL=https://garbar.tech` and `INDEX_SITE=true`, then deploy `out/` to that
-domain. A source change alone does not change Cloudflare DNS or publish to `garbar.tech`.
+`SITE_URL` controls canonical URLs and the sitemap at build time. Local/Sites builds default to
+the private preview address with indexing disabled. The Cloud Run Docker build sets the public
+address, enables indexing and selects the Google Cloud hosting notice. The original preview's
+access controls are independent of the public company website.
 
 Content provenance and update guidance: [docs/CONTENT.md](docs/CONTENT.md).
 Legal scope and references: [docs/LEGAL.md](docs/LEGAL.md).

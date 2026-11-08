@@ -1,4 +1,4 @@
-import { company, type Locale } from "./site";
+import { company, hostingProvider, type Locale } from "./site";
 
 export type PolicyKind = "privacy" | "terms";
 export type PolicySection = {
@@ -15,8 +15,11 @@ export type PolicyDocument = {
   sections: PolicySection[];
 };
 const email = company.email;
+const cloudRun = hostingProvider === "google-cloud-run";
 const providers = [
-  { label: "OpenAI · EU", href: "https://openai.com/policies/eu-privacy-policy/" },
+  cloudRun
+    ? { label: "Google Cloud", href: "https://cloud.google.com/terms/data-processing-addendum" }
+    : { label: "OpenAI · EU", href: "https://openai.com/policies/eu-privacy-policy/" },
   { label: "Google", href: "https://policies.google.com/privacy" },
   { label: "Cloudflare", href: "https://www.cloudflare.com/privacypolicy/" },
 ];
@@ -65,7 +68,9 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "providers",
           title: "5. Providers and recipients",
           paragraphs: [
-            "Google Workspace handles the company mailbox, including receiving, storing and replying to messages and attachments. The current private website is hosted through OpenAI Sites, with Cloudflare infrastructure for delivery and protection. Hosting and identity services handle the connection or account information necessary for those functions. Providers’ notices explain processing they perform for their own accounts, security and legal obligations.",
+            cloudRun
+              ? "Google Workspace handles the company mailbox, including receiving, storing and replying to messages and attachments. The public website is hosted on Google Cloud Run in Madrid, Spain, with Cloudflare providing DNS, HTTPS delivery and connection protection. These providers handle the technical information needed for those functions. Their notices explain processing for their own security and legal obligations. No account or sign-in is needed to visit the public website."
+              : "Google Workspace handles the company mailbox, including receiving, storing and replying to messages and attachments. The current private website is hosted through OpenAI Sites, with Cloudflare infrastructure for delivery and protection. Hosting and identity services handle the connection or account information necessary for those functions. Providers’ notices explain processing they perform for their own accounts, security and legal obligations.",
             "Access to correspondence is limited to people authorised to handle it. Information may also be shared with professional advisers or competent authorities where necessary for a legal obligation or claim. A link to another website takes you to that operator’s services and privacy information.",
           ],
           links: providers,
@@ -223,7 +228,9 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "providers",
           title: "5. Proveedores y destinatarios",
           paragraphs: [
-            "Google Workspace gestiona el correo de la empresa, incluidos recepción, almacenamiento y respuesta a mensajes y adjuntos. La web privada actual se aloja mediante OpenAI Sites, con infraestructura de Cloudflare para su entrega y protección. Los servicios de alojamiento e identidad tratan los datos de conexión o cuenta necesarios para esas funciones. Sus avisos explican los tratamientos propios de cuenta, seguridad y obligaciones legales.",
+            cloudRun
+              ? "Google Workspace gestiona el correo de la empresa, incluidos recepción, almacenamiento y respuesta a mensajes y adjuntos. La web pública se aloja en Google Cloud Run en Madrid, España, y Cloudflare proporciona DNS, entrega HTTPS y protección de conexión. Estos proveedores tratan la información técnica necesaria para esas funciones. Sus avisos explican sus tratamientos propios de seguridad y obligaciones legales. No necesitas una cuenta ni iniciar sesión para visitar la web pública."
+              : "Google Workspace gestiona el correo de la empresa, incluidos recepción, almacenamiento y respuesta a mensajes y adjuntos. La web privada actual se aloja mediante OpenAI Sites, con infraestructura de Cloudflare para su entrega y protección. Los servicios de alojamiento e identidad tratan los datos de conexión o cuenta necesarios para esas funciones. Sus avisos explican los tratamientos propios de cuenta, seguridad y obligaciones legales.",
             "El acceso a la correspondencia se limita a personas autorizadas para atenderla. También puede comunicarse información a asesores profesionales o autoridades competentes cuando sea necesario por una obligación legal o reclamación. Un enlace externo lleva a los servicios y la información de privacidad de ese operador.",
           ],
           links: providers,
@@ -381,7 +388,9 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "providers",
           title: "5. Proveïdors i destinataris",
           paragraphs: [
-            "Google Workspace gestiona el correu de l’empresa, incloent-hi recepció, emmagatzematge i resposta a missatges i adjunts. El web privat actual s’allotja mitjançant OpenAI Sites, amb infraestructura de Cloudflare per distribuir-lo i protegir-lo. Els serveis d’allotjament i identitat tracten les dades de connexió o compte necessàries per a aquestes funcions. Els seus avisos expliquen els tractaments propis de compte, seguretat i obligacions legals.",
+            cloudRun
+              ? "Google Workspace gestiona el correu de l’empresa, incloent-hi recepció, emmagatzematge i resposta a missatges i adjunts. El web públic s’allotja a Google Cloud Run a Madrid, Espanya, i Cloudflare proporciona DNS, distribució HTTPS i protecció de connexió. Aquests proveïdors tracten la informació tècnica necessària per a aquestes funcions. Els seus avisos expliquen els tractaments propis de seguretat i obligacions legals. No cal cap compte ni iniciar sessió per visitar el web públic."
+              : "Google Workspace gestiona el correu de l’empresa, incloent-hi recepció, emmagatzematge i resposta a missatges i adjunts. El web privat actual s’allotja mitjançant OpenAI Sites, amb infraestructura de Cloudflare per distribuir-lo i protegir-lo. Els serveis d’allotjament i identitat tracten les dades de connexió o compte necessàries per a aquestes funcions. Els seus avisos expliquen els tractaments propis de compte, seguretat i obligacions legals.",
             "L’accés a la correspondència es limita a persones autoritzades per atendre-la. També es pot comunicar informació a assessors professionals o autoritats competents quan calgui per una obligació legal o reclamació. Un enllaç extern porta als serveis i a la informació de privacitat d’aquell operador.",
           ],
           links: providers,
