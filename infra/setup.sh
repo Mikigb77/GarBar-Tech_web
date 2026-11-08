@@ -94,6 +94,12 @@ PROJECT_NUMBER=$(gc projects describe "$PROJECT_ID" --format='value(projectNumbe
 note "Signed in. Project $PROJECT_ID is number $PROJECT_NUMBER."
 
 step 'GitHub sign-in'
+# In WSL, reuse the Windows gh sign-in when there is one, so no second login is needed.
+if ! gh auth status --hostname github.com >/dev/null 2>&1 && command -v gh.exe >/dev/null \
+  && windows_token=$(gh.exe auth token 2>/dev/null | tr -d '\r') && [[ -n $windows_token ]]; then
+  export GH_TOKEN=$windows_token
+  note 'Using the Windows gh sign-in.'
+fi
 if ! gh auth status --hostname github.com >/dev/null 2>&1; then
   note 'Opening the browser to sign in. Enter the one-time code shown below.'
   gh auth login --hostname github.com --web --git-protocol https --scopes repo,workflow \
