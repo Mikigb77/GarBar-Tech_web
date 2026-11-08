@@ -77,10 +77,17 @@ if ! command -v gh >/dev/null; then
   apt_updated=
   apt_install gh
 fi
-# In WSL, sign-ins open the Windows browser and come back to localhost.
-if grep -qi microsoft /proc/version 2>/dev/null; then
-  if ! command -v wslview >/dev/null && command -v apt-get >/dev/null; then apt_install wslu; fi
-  if command -v wslview >/dev/null; then export BROWSER=wslview; fi
+# In WSL, sign-ins open the Windows browser and come back to localhost. wslview is used when it
+# is installed; otherwise (Kali, for one, has no wslu package) Windows' explorer.exe opens the link.
+if grep -qi microsoft /proc/version 2>/dev/null && [[ -z ${BROWSER:-} ]]; then
+  if command -v wslview >/dev/null; then
+    export BROWSER=wslview
+  elif command -v explorer.exe >/dev/null; then
+    # shellcheck disable=SC2016 # $1 belongs to the generated script.
+    printf '#!/bin/sh\nexplorer.exe "$1"\nexit 0\n' >"$TEMP_DIR/open-in-windows"
+    chmod +x "$TEMP_DIR/open-in-windows"
+    export BROWSER="$TEMP_DIR/open-in-windows"
+  fi
 fi
 note 'gcloud and gh are installed.'
 
