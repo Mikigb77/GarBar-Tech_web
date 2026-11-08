@@ -40,6 +40,8 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: Check TypeScript and route types
         run: npm run typecheck
+      - name: Check the README starts with the live URL
+        run: npm run test:readme
       - name: Test edge routing and upstream failures
         run: npm run test:edge
       - name: Build the public production website
