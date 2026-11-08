@@ -8,7 +8,7 @@ export const company = {
   taxId: "B56760374",
   address: "Carrer Sant Antoni Mª Claret, 24, 3ª planta, 08037 Barcelona, España",
   register: "Registre Mercantil de Barcelona · Tom 49105 · Foli 130 · Full 607875 · Inscripció 1",
-  email: "main@garbar.tech",
+  email: "info@garbar.tech",
 };
 
 export const siteUrl = (
@@ -144,7 +144,7 @@ const en = {
     sections: [
       {
         title: "Who is responsible",
-        body: "GARBAR, IN-TEC, S.L. is responsible for this company website. Our company details are linked below. For privacy enquiries, write to main@garbar.tech.",
+        body: "GARBAR, IN-TEC, S.L. is responsible for this company website. Our company details are linked below. For privacy enquiries, write to info@garbar.tech.",
       },
       {
         title: "Visiting this website",
@@ -156,7 +156,7 @@ const en = {
       },
       {
         title: "Your privacy rights",
-        body: "You can contact main@garbar.tech to ask about your personal data or exercise the rights that apply, including access, correction, deletion, objection, restriction and portability. You can also contact the Spanish Data Protection Agency (AEPD).",
+        body: "You can contact info@garbar.tech to ask about your personal data or exercise the rights that apply, including access, correction, deletion, objection, restriction and portability. You can also contact the Spanish Data Protection Agency (AEPD).",
       },
     ],
     authority: "Privacy rights at the AEPD",
@@ -299,7 +299,7 @@ const es: Copy = {
     sections: [
       {
         title: "Quién es responsable",
-        body: "GARBAR, IN-TEC, S.L. es la responsable de esta web corporativa. Puedes consultar los datos de la empresa en el enlace inferior. Para consultas de privacidad, escribe a main@garbar.tech.",
+        body: "GARBAR, IN-TEC, S.L. es la responsable de esta web corporativa. Puedes consultar los datos de la empresa en el enlace inferior. Para consultas de privacidad, escribe a info@garbar.tech.",
       },
       {
         title: "Al visitar esta web",
@@ -311,7 +311,7 @@ const es: Copy = {
       },
       {
         title: "Tus derechos de privacidad",
-        body: "Puedes escribir a main@garbar.tech para preguntar por tus datos o ejercer los derechos que correspondan, incluidos acceso, rectificación, supresión, oposición, limitación y portabilidad. También puedes dirigirte a la Agencia Española de Protección de Datos (AEPD).",
+        body: "Puedes escribir a info@garbar.tech para preguntar por tus datos o ejercer los derechos que correspondan, incluidos acceso, rectificación, supresión, oposición, limitación y portabilidad. También puedes dirigirte a la Agencia Española de Protección de Datos (AEPD).",
       },
     ],
     authority: "Tus derechos en la AEPD",
@@ -453,7 +453,7 @@ const ca: Copy = {
     sections: [
       {
         title: "Qui n’és responsable",
-        body: "GARBAR, IN-TEC, S.L. és la responsable d’aquest web corporatiu. Pots consultar les dades de l’empresa a l’enllaç inferior. Per a consultes de privacitat, escriu a main@garbar.tech.",
+        body: "GARBAR, IN-TEC, S.L. és la responsable d’aquest web corporatiu. Pots consultar les dades de l’empresa a l’enllaç inferior. Per a consultes de privacitat, escriu a info@garbar.tech.",
       },
       {
         title: "Quan visites aquest web",
@@ -465,7 +465,7 @@ const ca: Copy = {
       },
       {
         title: "Els teus drets de privacitat",
-        body: "Pots escriure a main@garbar.tech per preguntar sobre les teves dades o exercir els drets que corresponguin, incloent-hi accés, rectificació, supressió, oposició, limitació i portabilitat. També pots adreçar-te a l’Agència Espanyola de Protecció de Dades (AEPD).",
+        body: "Pots escriure a info@garbar.tech per preguntar sobre les teves dades o exercir els drets que corresponguin, incloent-hi accés, rectificació, supressió, oposició, limitació i portabilitat. També pots adreçar-te a l’Agència Espanyola de Protecció de Dades (AEPD).",
       },
     ],
     authority: "Els teus drets a l’AEPD",

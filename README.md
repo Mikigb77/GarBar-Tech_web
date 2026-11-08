@@ -33,7 +33,7 @@ is no automatic language redirect or language cookie.
 - `scripts/create-brand-assets.mjs`: renders the original SVG company mark into the social image and Apple icon.
 
 There are no analytics scripts, advertising trackers, contact forms or external font requests.
-Contact opens an email draft to `main@garbar.tech`; copying the address does not send a message.
+Contact opens an email draft to `info@garbar.tech`; copying the address does not send a message.
 Both products are presented as in development and coming soon to Android.
 
 ## Publishing

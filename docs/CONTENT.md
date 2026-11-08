@@ -10,7 +10,7 @@ product.
 - Registered name, NIF, registered address and commercial-register entry: the company records
   already used in `Mikigb77/TaskFlowWeb`, `src/content/legal/company.json`, and
   `Mikigb77/LucidSaga_Web`, `src/content/legal/company.ts`.
-- General company contact: `main@garbar.tech`, the company mailbox used in the owner's existing
+- General company contact: `info@garbar.tech`, the company mailbox used in the owner's existing
   setup. Product-specific support remains on each product website.
 - TaskFlow's capabilities and coming-soon status: `TaskFlowWeb/src/content/site/en.ts` and
   [its website](https://taskflow.garbar.tech). Calendar screenshots are from its `public/images/`.
