@@ -1,3 +1,5 @@
+**Live site: https://garbar.tech**
+
 # GarBar
 
 The company website for **GARBAR, IN-TEC, S.L.**, the Barcelona technology company behind
@@ -45,6 +47,8 @@ The public website is deployed to Cloud Run in the `garbar-tech` project, with C
 `garbar.tech` to it. It automatically scales to zero when idle, with at most three instances.
 Build and deployment instructions: [infra/DEPLOY.md](infra/DEPLOY.md). The one-time setup is a
 single script run in WSL, `bash infra/setup.sh`, which signs in and configures Google Cloud and GitHub.
+The live URL stays on this README's first line: CI fails if it differs from the URL the deploy
+publishes.
 
 Feature PRs target the default `dev` branch and run GitHub Actions CI. A merged `dev` → `main`
 release PR runs checks again and deploys production automatically. The branch flow and tests are
