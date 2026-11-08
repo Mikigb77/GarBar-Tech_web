@@ -43,11 +43,12 @@ Both products are presented as in development and coming soon to Android.
 
 The public website is deployed to Cloud Run in the `garbar-tech` project, with Cloudflare routing
 `garbar.tech` to it. It automatically scales to zero when idle, with at most three instances.
-Build and deployment instructions: [infra/DEPLOY.md](infra/DEPLOY.md).
+Build and deployment instructions: [infra/DEPLOY.md](infra/DEPLOY.md). The one-time setup is a
+single script, `pwsh -File infra/setup.ps1`, which signs in and configures Google Cloud and GitHub.
 
 Feature PRs target the default `dev` branch and run GitHub Actions CI. A merged `dev` → `main`
-release PR runs checks again and deploys production automatically. The branch flow, tests and
-current GitHub plan limitation are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
+release PR runs checks again and deploys production automatically. The branch flow and tests are
+documented in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 The separate private Sites preview is identified by `.openai/hosting.json`; its static directory is
 `out`. Website source remains in this repository. The Sites source workflow commits and pushes

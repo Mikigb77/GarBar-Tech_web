@@ -18,7 +18,7 @@ function Invoke-WebGcloud {
 
 Push-Location -LiteralPath $repo
 try {
-    if ($Bootstrap) { & (Join-Path $PSScriptRoot 'bootstrap-cloud.ps1') }
+    if ($Bootstrap) { & (Join-Path $PSScriptRoot 'setup.ps1') }
     if (git status --porcelain) { throw 'Commit the intended website source before deploying.' }
     $revision = (git rev-parse HEAD).Trim()
     $image = "$region-docker.pkg.dev/$projectId/garbar-web/web:$revision"

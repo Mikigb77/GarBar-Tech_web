@@ -2,35 +2,30 @@
 
 The default branch is `dev`. Start a feature branch from it, then open a PR back into `dev`.
 The CI workflow checks TypeScript, tests edge routing and failures, builds Next.js for the public
-domain, and tests all 13 exported pages, assets, privacy notices, metadata and HTTP behavior.
+domain, and tests all 13 exported pages, assets, privacy notices, metadata and HTTP behavior. It
+also builds the Docker image, runs it and tests the same pages against the container.
 
 ```sh
 git switch dev
 git pull --ff-only
-git switch -c codex/your-change
+git switch -c your-change
 ```
 
 When `dev` is ready to publish, open a PR **from this repository's `dev` branch into `main`**.
 Use a merge commit. Opening the PR runs CI; merging it starts the production deployment. The
 deployment verifies the merged PR, reruns CI, builds and pushes an image, deploys its digest to
-Cloud Run, and checks the public website through Cloudflare. A feature PR never deploys.
+Cloud Run, tests the new revision (rolling back if it fails), and checks the public website through
+Cloudflare. A feature PR never deploys.
 
-The metadata-only PR policy automatically closes PRs outside this flow. It does not check out
-or execute PR code. Production accepts only the exact merge commit of a merged `dev` → `main`
-PR; an ordinary direct push to `main` fails the release gate.
+Production accepts only the exact merge commit of a merged `dev` → `main` PR; a direct push to
+`main` fails the release gate.
 
-## GitHub plan limitation
+## Protected branches
 
-GitHub currently returns HTTP 403 for branch protection on this private repository and requires
-GitHub Pro or a qualifying plan. Until that is available, GitHub cannot prevent maintainers from
-pushing directly or merging with failed checks. Follow the PR flow and wait for **Website checks**
-to pass. The PR policy and deployment gate remain active, but are not a substitute for protected
-branches. Repository administrators can also change workflows and settings.
-
-Once the plan supports protection, run `pwsh -File infra/protect-branches.ps1`. It requires PRs,
-passing `Website checks`, resolved conversations, and disables force pushes and deletion on both
-branches, including for admins. It does not require another person's review. `dev` checks must
-be up to date; release checks are also rerun after a merge to `main` before deployment.
+`dev` and `main` only change through PRs. Both need green **Website checks** and **Container
+image** and resolved conversations; PRs into `dev` must also be up to date with it. Force pushes
+and deletion are blocked, for admins too, and no review from another person is required. The
+protection is set by `infra/setup.ps1` ([infra/DEPLOY.md](infra/DEPLOY.md)).
 
 ## Run the checks locally
 
