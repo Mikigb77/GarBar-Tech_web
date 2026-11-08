@@ -1198,7 +1198,6 @@ h1 em {
   border-radius: 46px 46px 0 0;
   background: #14251d;
   box-shadow: 0 40px 80px rgb(15 61 49 / 0.3);
-  transform: translateY(calc(var(--lift, 0) * 1px));
   animation: float 7s ease-in-out infinite;
 }
 .phone img {
