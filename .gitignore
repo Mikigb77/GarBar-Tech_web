@@ -8,5 +8,6 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .env*
+gha-creds-*.json
 npm-debug.log*
 .DS_Store

@@ -14,31 +14,95 @@ Node process serves that output as the non-root `node` user. The public image is
 `SITE_URL=https://garbar.tech`, `INDEX_SITE=true` and `HOSTING_PROVIDER=google-cloud-run`, including
 the correct public canonical links, sitemap and hosting information in all three privacy pages.
 
-## Initial infrastructure
+## One-time setup
 
-With the existing `tech.garbar@gmail.com` gcloud login:
+Run this once, in WSL (Ubuntu), from the repository root:
 
-```powershell
-pwsh -File infra/bootstrap-cloud.ps1
+```sh
+bash infra/setup.sh
 ```
 
-This enables the four required APIs and creates the website's Docker repository, private regional
-build-source bucket and two service accounts. The runtime account has no project roles. The build
-account can read this source bucket, write this image repository and emit build logs. No service
-account keys are created. All commands explicitly name the project and account and preserve the
-user's active gcloud configuration.
+It is the only manual step, and it is safe to run again. It installs `gcloud` and `gh` with apt
+if they are missing (asking for the sudo password), opens the Windows browser through `wslview`
+to sign in to Google Cloud (`tech.garbar@gmail.com`) and GitHub only when needed, then sets up
+everything else itself:
 
-## Build and deploy
+- **Google Cloud:** enables the APIs; creates the `garbar-web` image repository (keeping the
+  newest 10 images and anything under 30 days old), the build bucket for manual deploys and
+  three service accounts: `garbar-web-runtime` (runs the site, no roles), `garbar-web-builder`
+  (manual Cloud Build) and `garbar-web-deployer` (GitHub Actions). It makes sure the Cloud Run
+  service exists, is public and scales from 0 to 3 instances.
+- **Workload Identity Federation:** the pool `github-actions` and provider `garbar-web-main` only
+  accept GitHub's token for this repository and owner (by id), from `deploy.yml` on a push to
+  `main`. Only that token can act as the deployer. No service-account key exists anywhere.
+- **Deployer permissions:** Artifact Registry Writer on the image repository, Cloud Run Developer
+  on this one service, and Service Account User on the runtime account. No project-wide roles.
+- **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch and
+  protects `dev` and `main`: changes only through PRs with green **PR route**, **Website
+  checks** and **Container image**, resolved conversations, no force pushes or deletion, admins included. No
+  review from another person is required. `SKIP_BRANCH_PROTECTION=1` leaves protection alone.
+  It turns on deleting a branch when its PR merges, and deletes leftover branches whose work is
+  already merged or whose PR was closed, so only `dev` and `main` remain. Branches with an open
+  PR or unmerged work are kept and listed.
 
-From a clean, committed checkout:
+| Repository variable | Value |
+| --- | --- |
+| `GCP_PROJECT_ID` | `garbar-tech` |
+| `GCP_REGION` | `europe-southwest1` |
+| `GCP_WORKLOAD_IDENTITY_PROVIDER` | `projects/440941551109/locations/global/workloadIdentityPools/github-actions/providers/garbar-web-main` |
+| `GCP_DEPLOY_SERVICE_ACCOUNT` | `garbar-web-deployer@garbar-tech.iam.gserviceaccount.com` |
+| `GCP_RUNTIME_SERVICE_ACCOUNT` | `garbar-web-runtime@garbar-tech.iam.gserviceaccount.com` |
+| `GCP_ARTIFACT_REPOSITORY` | `europe-southwest1-docker.pkg.dev/garbar-tech/garbar-web` |
+| `CLOUD_RUN_SERVICE` | `garbar-web` |
 
-```powershell
-pwsh -File infra/deploy-cloud.ps1
+None of these is a secret, and no GitHub secret is needed. If a variable is missing, the deploy
+stops at its first step and says to run the setup script.
+
+## GitHub Actions
+
+**`ci.yml`** runs on every PR into `dev` or `main` and on every push to `dev`:
+
+- **Website checks:** shellcheck on `infra/`, TypeScript, the edge Worker tests, the production
+  build and the site tests.
+- **Container image:** builds the Dockerfile, runs the image as Cloud Run does and tests all 13
+  pages, their assets, the sitemap and the headers against it.
+
+A newer push to a PR cancels its older run.
+
+**`pr-route.yml`** (**PR route**) fails a PR that isn't a feature PR into `dev` or this
+repository's `dev` into `main`. It is its own workflow so that editing a PR's text re-runs only
+this check, while moving a PR to another base branch still re-checks it.
+
+**`deploy.yml`** runs when a `dev` → `main` PR is merged, and only then:
+
+1. Checks the repository variables exist and that the `main` commit is the merge of a
+   same-repository `dev` PR. Direct pushes to `main` never deploy, and an older release is
+   skipped when a newer one is already on `main`.
+2. Runs the website checks again on the merged commit.
+3. Builds the image, signs in to Google through Workload Identity Federation, pushes it, and
+   deploys it to Cloud Run by digest with automatic scaling from **0** to **3** instances.
+4. Checks the service settings and tests every page on the new revision. If either fails, traffic
+   goes back to the revision that served before, and the run fails.
+5. Tests the public site through Cloudflare.
+
+Deploys run one at a time and are never cancelled half way. `dependabot.yml` keeps the
+SHA-pinned actions current with a monthly PR into `dev`.
+
+Cloudflare's `garbar-web-edge` Worker keeps the same Cloud Run URL across revisions, so ordinary
+deploys never touch `edge/`.
+
+## Manual recovery deployment
+
+Only when GitHub Actions can't deploy. In WSL, from a clean, committed checkout (`--bootstrap` runs the
+setup script first):
+
+```sh
+bash infra/deploy-cloud.sh
 ```
 
 Cloud Build builds the Dockerfile from this commit, pushes the image and Cloud Run deploys it by
 digest. The script sets automatic scaling with minimum 0 and maximum 3 on every deployment and
-checks the English homepage through the service's generated URL. The website is public; the
+tests every page through the service's generated URL. The website is public; the
 runtime does not require a ChatGPT account or product sign-in.
 
 Cloudflare's `garbar-web-edge` Worker forwards the root domain to the returned Cloud Run origin.
@@ -62,10 +126,11 @@ provider billing. No always-on load balancer is used.
 
 Inspect the configured service:
 
-```powershell
+```sh
 gcloud run services describe garbar-web --region=europe-southwest1 --project=garbar-tech --account=tech.garbar@gmail.com
 ```
 
 To roll back, use Cloud Run's Revisions tab or `gcloud run services update-traffic` with the exact
 previous revision name and the same explicit project/account/region. The Cloudflare origin stays
-the same across website revisions.
+the same across website revisions. A rollback pins traffic to that revision; the next deploy from
+GitHub Actions sends traffic back to its own new revision.
