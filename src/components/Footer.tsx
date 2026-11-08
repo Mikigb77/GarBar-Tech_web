@@ -1,4 +1,4 @@
-import { company, copy, pagePath, taskflowUrl, type Locale } from "@/content/site";
+import { company, copy, lucidSagaUrl, pagePath, taskflowUrl, type Locale } from "@/content/site";
 import { Arrow, BrandLockup } from "./Brand";
 
 export function Footer({ locale }: { locale: Locale }) {
@@ -31,7 +31,7 @@ export function Footer({ locale }: { locale: Locale }) {
             <Arrow diagonal />
           </a>
           <a
-            href={`https://lucidsaga.garbar.tech/${locale}`}
+            href={lucidSagaUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -55,6 +55,9 @@ export function Footer({ locale }: { locale: Locale }) {
           <Arrow diagonal />
         </a>
       </div>
+      <p className="footer-wordmark" aria-hidden="true">
+        {company.brand}
+      </p>
     </footer>
   );
 }

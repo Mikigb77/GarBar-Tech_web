@@ -1,17 +1,24 @@
 import brand from "@/content/brand.json";
 
-export function BrandMark({ className = "" }: { className?: string }) {
+/**
+ * The GB monogram: a G and an orange B sharing one stem. With `draw`, each stroke is given a path
+ * length of 1 so the stylesheet can draw it in (`.mark-draw`), and it settles fully drawn under
+ * reduced motion.
+ */
+export function BrandMark({ className = "", draw = false }: { className?: string; draw?: boolean }) {
+  const length = draw ? 1 : undefined;
   return (
     <svg
-      className={className}
+      className={`brand-mark ${draw ? "mark-draw" : ""} ${className}`}
       viewBox={brand.viewBox}
       fill="none"
       strokeWidth={brand.strokeWidth}
+      strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path d={brand.gPath} stroke="currentColor" />
-      <path d={brand.bPath} stroke="var(--accent, #f0643d)" />
+      <path className="mark-g" d={brand.gPath} stroke="currentColor" pathLength={length} />
+      <path className="mark-b" d={brand.bPath} stroke={`var(--accent, ${brand.accent})`} pathLength={length} />
     </svg>
   );
 }
