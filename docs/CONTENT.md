@@ -20,12 +20,29 @@ Privacy and terms are adapted from TaskFlow to this company's website: see `docs
 - TaskFlow's capabilities and coming-soon status: `TaskFlowWeb/src/content/site/en.ts` and
   [its website](https://taskflow.garbar.tech). Calendar screenshots are from its `public/images/`.
 - Lucid Saga's capabilities and coming-soon status: `LucidSaga_Web/src/i18n/dictionaries/` and
-  [its website](https://lucidsaga.garbar.tech). Its gate and icon come from `src/assets/`.
+  [its website](https://lucidsaga.garbar.tech). Its gate and icon come from `src/assets/`; the
+  well-at-dusk scene and its words in the hero console come from its demo (`demo` in the
+  dictionaries, `src/assets/scenes/`); the world covers in `public/images/worlds/` and their titles
+  in `src/content/worlds.ts` come from `src/content/worlds.ts` and `src/assets/worlds/`.
+- "Three languages in each product": TaskFlow's ARB files (`App/lib/l10n/app_{en,es,ca}.arb`) and
+  Lucid Saga's (`PlayableAnime/app/lib/l10n/app_{en,es,ca}.arb`).
 - Privacy-rights reference: [AEPD: Ejerce tus derechos](https://www.aepd.es/derechos-y-deberes/ejerce-tus-derechos).
 
 Company positioning and design principles describe an intention, not a claim about customer
 numbers, staffing, awards, investment or commercial traction. No such statistics or testimonials
 are invented. Neither product has a download button while it is still coming soon.
+
+## Design
+
+Night and paper, with the coral of the GB's B (`#ff5b35`) as the one loud colour; each product
+keeps its own palette (TaskFlow's greens, Lucid Saga's night and gold). The GB monogram keeps the
+owner's geometry, with round caps, and the favicon and Apple icon put it on a night tile.
+
+The page moves: drifting colour behind the night sections, a hero console that types a phrase and
+lets each product answer it, a marquee, a statement that lights up word by word as it scrolls,
+reveal-on-scroll entrances, pointer-following light, Lucid Saga's fireflies and drifting worlds,
+and an orbiting, self-drawing monogram. `src/components/Motion.tsx` drives the scroll and pointer
+effects; the rest is CSS. Every animation stops or settles under `prefers-reduced-motion: reduce`.
 
 ## Updates
 

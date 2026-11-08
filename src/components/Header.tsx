@@ -30,7 +30,7 @@ export function Header({
     return () => window.removeEventListener("keydown", escape);
   }, [open]);
   return (
-    <header className="site-header">
+    <header className="site-header" data-open={open || undefined}>
       <div className="header-inner">
         <a href={home} className="brand" aria-label={brand.name}>
           <BrandLockup />
@@ -39,7 +39,7 @@ export function Header({
           <a href={`${home}#company`}>{labels.about}</a>
           <a href={`${home}#products`}>
             {labels.projects}
-            <span className="nav-count">02</span>
+            <span className="nav-count">2</span>
           </a>
         </nav>
         <div className="header-actions">
@@ -58,7 +58,7 @@ export function Header({
             ))}
           </nav>
           <a className="header-contact" href={`${home}#contact`}>
-            {labels.contact}
+            <span>{labels.contact}</span>
             <Arrow diagonal />
           </a>
           <button
