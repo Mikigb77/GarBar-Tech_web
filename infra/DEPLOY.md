@@ -37,9 +37,10 @@ everything else itself:
   `main`. Only that token can act as the deployer. No service-account key exists anywhere.
 - **Deployer permissions:** Artifact Registry Writer on the image repository, Cloud Run Developer
   on this one service, and Service Account User on the runtime account. No project-wide roles.
-- **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch and
-  protects `dev` and `main`: changes only through PRs with green **PR route**, **Website
-  checks** and **Container image**, resolved conversations, no force pushes or deletion, admins included. No
+- **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch,
+  turns on GitHub secret scanning and push protection, and protects `dev` and `main`: changes
+  only through PRs with green **PR route**, **Website checks**, **Container image** and
+  **Secret scan**, resolved conversations, no force pushes or deletion, admins included. No
   review from another person is required. `SKIP_BRANCH_PROTECTION=1` leaves protection alone.
   It turns on deleting a branch when its PR merges, and deletes leftover branches whose work is
   already merged or whose PR was closed, so only `dev` and `main` remain. Branches with an open
