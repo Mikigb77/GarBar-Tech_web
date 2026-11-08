@@ -16,15 +16,16 @@ the correct public canonical links, sitemap and hosting information in all three
 
 ## One-time setup
 
-Run this once from the repository root, on a computer with PowerShell 7:
+Run this once, in WSL (Ubuntu), from the repository root:
 
-```powershell
-pwsh -File infra/setup.ps1
+```sh
+bash infra/setup.sh
 ```
 
-It is the only manual step, and it is safe to run again. It installs `gcloud` and `gh` with winget
-if they are missing, opens the browser to sign in to Google Cloud (`tech.garbar@gmail.com`) and
-GitHub only when needed, then sets up everything else itself:
+It is the only manual step, and it is safe to run again. It installs `gcloud` and `gh` with apt
+if they are missing (asking for the sudo password), opens the Windows browser through `wslview`
+to sign in to Google Cloud (`tech.garbar@gmail.com`) and GitHub only when needed, then sets up
+everything else itself:
 
 - **Google Cloud:** enables the APIs; creates the `garbar-web` image repository (keeping the
   newest 10 images and anything under 30 days old), the build bucket for manual deploys and
@@ -39,7 +40,10 @@ GitHub only when needed, then sets up everything else itself:
 - **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch and
   protects `dev` and `main`: changes only through PRs with green **Website checks** and
   **Container image**, resolved conversations, no force pushes or deletion, admins included. No
-  review from another person is required. Pass `-SkipBranchProtection` to leave protection alone.
+  review from another person is required. `SKIP_BRANCH_PROTECTION=1` leaves protection alone.
+  It turns on deleting a branch when its PR merges, and deletes leftover branches whose work is
+  already merged or whose PR was closed, so only `dev` and `main` remain. Branches with an open
+  PR or unmerged work are kept and listed.
 
 | Repository variable | Value |
 | --- | --- |
@@ -85,16 +89,16 @@ deploys never touch `edge/`.
 
 ## Manual recovery deployment
 
-Only when GitHub Actions can't deploy. From a clean, committed checkout (`-Bootstrap` runs the
+Only when GitHub Actions can't deploy. In WSL, from a clean, committed checkout (`--bootstrap` runs the
 setup script first):
 
-```powershell
-pwsh -File infra/deploy-cloud.ps1
+```sh
+bash infra/deploy-cloud.sh
 ```
 
 Cloud Build builds the Dockerfile from this commit, pushes the image and Cloud Run deploys it by
 digest. The script sets automatic scaling with minimum 0 and maximum 3 on every deployment and
-checks the English homepage through the service's generated URL. The website is public; the
+tests every page through the service's generated URL. The website is public; the
 runtime does not require a ChatGPT account or product sign-in.
 
 Cloudflare's `garbar-web-edge` Worker forwards the root domain to the returned Cloud Run origin.
@@ -118,7 +122,7 @@ provider billing. No always-on load balancer is used.
 
 Inspect the configured service:
 
-```powershell
+```sh
 gcloud run services describe garbar-web --region=europe-southwest1 --project=garbar-tech --account=tech.garbar@gmail.com
 ```
 

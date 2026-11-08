@@ -48,6 +48,8 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      - name: Lint the setup and deploy scripts
+        run: shellcheck -x infra/*.sh
       - name: Install locked dependencies
         run: npm ci --no-audit --no-fund
       - name: Check TypeScript and route types
