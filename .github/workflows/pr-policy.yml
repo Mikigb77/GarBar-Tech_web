@@ -1,0 +1,35 @@
+name: Pull request policy
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+permissions: {}
+
+concurrency:
+  group: pr-policy-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  branch-policy:
+    name: Branch policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    steps:
+      # Metadata only: never check out or execute code from the pull request here.
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const isRelease = pr.base.ref === 'main' && pr.head.ref === 'dev'
+              && pr.head.repo?.id === context.payload.repository.id;
+            if (pr.base.ref === 'dev' || isRelease) {
+              core.info(`Accepted: ${pr.head.ref} -> ${pr.base.ref}`);
+              return;
+            }
+            await github.rest.pulls.update({
+              ...context.repo, pull_number: pr.number, state: 'closed'
+            });
+            core.setFailed('Feature PRs must target dev. Only this repository\'s dev branch may target main.');

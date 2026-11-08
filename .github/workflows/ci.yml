@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  push:
+    branches: [dev]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  website:
+    name: Website checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      SITE_URL: https://garbar.tech
+      INDEX_SITE: 'true'
+      HOSTING_PROVIDER: google-cloud-run
+    steps:
+      - name: Verify the pull request route
+        if: github.event_name == 'pull_request'
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+          const pr = event.pull_request;
+          assert.ok(pr.base.ref === 'dev' || (pr.base.ref === 'main' && pr.head.ref === 'dev'
+            && pr.head.repo?.id === event.repository.id),
+            'Feature PRs must target dev. Only the same repository dev branch may target main.');
+          JS
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Check TypeScript and route types
+        run: npm run typecheck
+      - name: Test edge routing and upstream failures
+        run: npm run test:edge
+      - name: Build the public production website
+        run: npm run build
+      - name: Test pages, assets, privacy, SEO and HTTP behavior
+        run: npm run test:site

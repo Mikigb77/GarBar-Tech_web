@@ -28,7 +28,38 @@ account can read this source bucket, write this image repository and emit build 
 account keys are created. All commands explicitly name the project and account and preserve the
 user's active gcloud configuration.
 
-## Build and deploy
+## GitHub Actions deployment
+
+The normal release path is a feature PR into `dev`, then a release PR from `dev` into `main`.
+CI runs on PRs to both branches. Merging the release starts `.github/workflows/deploy.yml`.
+The release gate verifies that the exact `main` commit came from a merged same-repository
+`dev` PR. It runs the reusable CI workflow again before building and deploying. No PR deployment,
+manual dispatch, or generic direct-push deployment is enabled.
+
+The workflow builds the Dockerfile on the GitHub runner, authenticates using GitHub OIDC, pushes
+to the existing Artifact Registry repository and deploys by immutable digest. It retains the
+runtime identity and automatic scaling minimum 0 / maximum 3. The smoke check covers the public
+pages, assets, product link addresses, privacy provider notices, canonical links and sitemap.
+Cloudflare's stable upstream service URL does not need changing for new revisions.
+
+The one-time cloud identity setup is reproducible with:
+
+```powershell
+pwsh -File infra/bootstrap-github.ps1
+```
+
+`garbar-web-deployer` has Artifact Registry Writer on this image repository, Cloud Run Developer
+on this service, and Service Account User on the runtime account. It has no project-wide roles.
+Workload Identity Federation restricts access to repository ID `1450505157`, owner ID `112938189`,
+the `main` branch, `push` events and this repository's `deploy.yml`. No JSON service-account key
+or GitHub secret is used. Action versions are pinned to verified commit SHAs.
+
+GitHub currently blocks branch protection on the repository's private Free plan. The policy
+workflow closes incorrectly routed PRs, but cannot prevent direct pushes or unchecked merges.
+See [CONTRIBUTING.md](../CONTRIBUTING.md) and the prepared `infra/protect-branches.ps1` for enabling
+the full protections when the plan supports them.
+
+## Manual recovery deployment
 
 From a clean, committed checkout:
 

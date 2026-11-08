@@ -9,6 +9,8 @@ design
 docs
 edge
 .env*
+gha-creds-*.json
+tests
 *.tar.gz
 *.tsbuildinfo
 npm-debug.log*

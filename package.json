@@ -12,6 +12,10 @@
     "start": "node scripts/serve.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run typecheck",
+    "test": "npm run test:edge && npm run test:site",
+    "test:edge": "node --test tests/edge.test.mjs",
+    "test:site": "node --test tests/site.test.mjs",
+    "smoke": "node scripts/verify-site.mjs https://garbar.tech",
     "preview": "node scripts/serve.mjs"
   },
   "dependencies": {
