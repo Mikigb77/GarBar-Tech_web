@@ -53,18 +53,22 @@ export function Arrow({
   );
 }
 
+/** TaskFlow's mark as its website and app draw it: a double tick on a Lagoon gradient tile. */
 export function TaskMark({ className = "" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <rect width="40" height="40" rx="12" fill="#167263" />
-      <path
-        d="m9 21 6 6L29 13m-8 14 10-10M15 21l6-6"
-        stroke="white"
-        strokeWidth="2.4"
+    <span className={`task-mark ${className}`} aria-hidden="true">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-    </svg>
+      >
+        <path d="m3 12 5 5L19 6" />
+        <path d="m13 14 3 3 7-8" />
+      </svg>
+    </span>
   );
 }
 

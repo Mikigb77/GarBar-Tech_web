@@ -18,7 +18,10 @@ Privacy and terms are adapted from TaskFlow to this company's website: see `docs
 - General company contact: `info@garbar.tech`, the company mailbox used in the owner's existing
   setup. Product-specific support remains on each product website.
 - TaskFlow's capabilities and coming-soon status: `TaskFlowWeb/src/content/site/en.ts` and
-  [its website](https://taskflow.garbar.tech). Calendar screenshots are from its `public/images/`.
+  [its website](https://taskflow.garbar.tech). Its product card follows that website's home page
+  (the "Nova" design in the Lagoon palette, chosen by the owner on 9 November 2026): the title and
+  its accent, the five feature titles, the voice example, and the app as the site redraws it
+  (`src/components/HomeNova.tsx`), each in its own words in English, Spanish and Catalan.
 - Lucid Saga's capabilities and coming-soon status: `LucidSaga_Web/src/i18n/dictionaries/` and
   [its website](https://lucidsaga.garbar.tech). Its gate and icon come from `src/assets/`; the
   well-at-dusk scene and its words in the hero console come from its demo (`demo` in the
@@ -35,7 +38,8 @@ are invented. Neither product has a download button while it is still coming soo
 ## Design
 
 Night and paper, with the coral of the GB's B (`#ff5b35`) as the one loud colour; each product
-keeps its own palette (TaskFlow's greens, Lucid Saga's night and gold). The GB monogram keeps the
+keeps its own palette and look: TaskFlow's Lagoon from its website (night teal, mint, lime, with
+Bricolage Grotesque titles and an Instrument Serif italic accent), Lucid Saga's night and gold. The GB monogram keeps the
 owner's geometry, with round caps, and the favicon and Apple icon put it on a night tile.
 
 The page moves: drifting colour behind the night sections, a hero console that types a phrase and
