@@ -116,8 +116,8 @@ checked on the new Node, and `npm run test:repo` fails if a Dependabot entry doe
 ### The weekly pass
 
 A scheduled Claude pass at 06:09 Madrid time on Mondays works through every open Dependabot PR,
-security updates first (Miki, 2026-11-10). A Dependabot PR is merged like any other: CI must be
-green and it is squash-merged into `dev`.
+security updates first, and then every open Dependabot alert (Miki, 2026-11-10). A Dependabot PR is
+merged like any other: CI must be green and it is squash-merged into `dev`.
 
 - A green patch or minor update is merged.
 - A major update is merged when CI is green and its release notes change nothing that affects the
@@ -128,11 +128,19 @@ green and it is squash-merged into `dev`.
 - A merged security fix to something that ships (the npm packages or the image) is deployed the
   same morning through a `dev` → `main` PR, one deploy at a time. Everything else ships with the
   next deploy.
-- The pass reads the repository's open alerts and notes any that are new or changed.
+- Then it works through every open alert under the Security tab, not only the new ones:
+  - an alert whose security PR is open is handled with the PRs above, and one fixed on `dev` closes
+    once that fix is on the default branch;
+  - an alert with a fixed version but no PR (Dependabot couldn't open one, or the package is only a
+    dependency of a dependency) gets a PR into `dev` that updates it, through an npm `overrides`
+    entry if its parent doesn't allow the fixed version yet;
+  - an alert with no fixed version stays open: the report says whether the package ships (in the
+    site or the image) or is only used to build and test, and what would remove it.
+  An alert is never dismissed without Miki's word.
 
 ### The weekly report
 
-By 07:55 Madrid time the pass files one GitHub issue in each repository that has something to
+By 07:55 Madrid time, ready before 08:00, the pass files one GitHub issue in each repository that has something to
 report, labelled `dependabot-report` and assigned to Miki, so one search lists every open report:
 [label:dependabot-report assignee:Mikigb77](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Adependabot-report+assignee%3AMikigb77).
 A week with no Dependabot PR to handle, no new or changed alert and nothing merged, closed or
@@ -147,8 +155,8 @@ say how soon it needs Miki:
 - **low**, for the record: updates were merged, closed or deployed, and nothing needs Miki.
 
 The report opens with what Miki needs to do, or "Nothing for you to do.", then lists what needs
-Miki, what merged, closed (with the reason), deployed or is still pending, and any new alert, with
-links. An alert already reported and unchanged isn't repeated. Work still running at 07:55 is
+Miki, what merged, closed (with the reason), deployed or is still pending, and the alerts: new or
+changed ones, ones fixed this week, and any still open with why, with links. An alert already reported and unchanged isn't repeated. Work still running at 07:55 is
 finished afterwards and added as a comment. The next week's report closes a low one; a high or
 medium report stays open until what it asks for is done.
 
