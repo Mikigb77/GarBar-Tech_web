@@ -103,9 +103,15 @@ jobs:
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
+      - name: Read the Node version from the Dockerfile
+        id: node
+        run: |
+          version=$(awk '$1 == "FROM" && $2 ~ /^node:/ { sub(/^node:/, "", $2); sub(/-.*/, "", $2); print $2; exit }' Dockerfile)
+          test -n "$version" || { echo "::error::The Dockerfile has no FROM node line."; exit 1; }
+          echo "version=$version" >>"$GITHUB_OUTPUT"
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: '22'
+          node-version: ${{ steps.node.outputs.version }}
       - name: Build the production container
         run: >-
           docker build --build-arg SITE_URL=https://garbar.tech --build-arg INDEX_SITE=true

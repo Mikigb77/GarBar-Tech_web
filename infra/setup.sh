@@ -262,7 +262,7 @@ JSON
 note 'Secret scanning and push protection are on.'
 
 # Dependabot: an alert for every dependency with a known vulnerability, and a PR into dev that fixes
-# it. The monthly version updates are configured in .github/dependabot.yml.
+# it. The weekly version updates are configured in .github/dependabot.yml.
 gh api --method PUT "repos/$FULL_NAME/vulnerability-alerts" --silent
 gh api --method PUT "repos/$FULL_NAME/automated-security-fixes" --silent
 note 'Dependabot alerts and security updates are on.'

@@ -89,21 +89,68 @@ this check, while moving a PR to another base branch still re-checks it.
 
 Deploys run one at a time and are never cancelled half way.
 
-## Dependabot
-
-Dependabot opens its PRs into `dev`, where they pass the same checks as any other PR:
-
-- **Security updates**, as soon as an advisory is published for a dependency in use. They and
-  the alerts behind them are turned on by `infra/setup.sh`; the alerts are under the
-  repository's **Security** tab.
-- **Version updates**, once a month (`.github/dependabot.yml`): one PR for the SHA-pinned
-  GitHub Actions, one for npm minor and patch updates, and one for each new npm major version.
-  `@types/node` stays on Node.js 22, the version the site runs on.
-
-They reach production with the next `dev` → `main` release.
-
 Cloudflare's `garbar-web-edge` Worker keeps the same Cloud Run URL across revisions, so ordinary
 deploys never touch `edge/`.
+
+## Dependabot
+
+Dependabot watches the site's npm packages, the image's Node (both stages of the `Dockerfile`) and
+the workflows' actions. It is free, and stays free if the repository goes private. The same rules
+apply in every GarBar repository.
+
+- **Alerts** list each known vulnerability under the repository's Security tab.
+- **Security updates** open a PR into `dev`, the default branch, as soon as an advisory affects a
+  package and a fixed version exists. They never wait.
+- **Version updates** ([`.github/dependabot.yml`](../.github/dependabot.yml)) open PRs into `dev`
+  once a week, early on Monday (04:00 Madrid time). React and its types move together; the other
+  minor and patch updates share one PR per ecosystem, and each major update gets its own. A
+  release waits 7 days before it is offered, so a broken or hijacked release is usually pulled
+  first. A new major Node (and its `@types/node`) is a PR of its own.
+
+Alerts and security updates are switched on in the repository's settings, not in the file (since
+2026-11-10; `infra/setup.sh` keeps them on, and
+`gh api repos/Mikigb77/GarBar-Tech_web/automated-security-fixes` shows whether they still are). CI
+and the deploy read the Node version from the `Dockerfile`, so an update of the image's Node is
+checked on the new Node, and `npm run test:repo` fails if a Dependabot entry doesn't target `dev`.
+
+### The weekly pass
+
+A scheduled Claude pass at 06:09 Madrid time on Mondays works through every open Dependabot PR,
+security updates first (Miki, 2026-11-10). A Dependabot PR is merged like any other: CI must be
+green and it is squash-merged into `dev`.
+
+- A green patch or minor update is merged.
+- A major update is merged when CI is green and its release notes change nothing that affects the
+  site. One that changes behavior, cost or licence is left for Miki.
+- When CI is red, a small, clear fix goes on the Dependabot branch. Otherwise the PR is closed with
+  the reason, and a version that can't work yet gets an `ignore` with the reason in
+  `dependabot.yml`.
+- A merged security fix to something that ships (the npm packages or the image) is deployed the
+  same morning through a `dev` → `main` PR, one deploy at a time. Everything else ships with the
+  next deploy.
+- The pass reads the repository's open alerts and notes any that are new or changed.
+
+### The weekly report
+
+By 07:55 Madrid time the pass files one GitHub issue in each repository that has something to
+report, labelled `dependabot-report` and assigned to Miki, so one search lists every open report:
+[label:dependabot-report assignee:Mikigb77](https://github.com/issues?q=is%3Aopen+is%3Aissue+label%3Adependabot-report+assignee%3AMikigb77).
+A week with no Dependabot PR to handle, no new or changed alert and nothing merged, closed or
+deployed files nothing. The title (`[high] Dependabot report, YYYY-MM-DD`) and an `urgency:` label
+say how soon it needs Miki:
+
+- **high**, act today: something that ships is exposed or broken. An alert on a dependency that
+  ships is still open after the pass, a deploy or rollback failed, or `dev` or `main` is red because
+  of an update.
+- **medium**, decide this week: something only Miki can decide is waiting, such as a major update
+  that changes behavior, cost or licence, or a red update with no clear fix.
+- **low**, for the record: updates were merged, closed or deployed, and nothing needs Miki.
+
+The report opens with what Miki needs to do, or "Nothing for you to do.", then lists what needs
+Miki, what merged, closed (with the reason), deployed or is still pending, and any new alert, with
+links. An alert already reported and unchanged isn't repeated. Work still running at 07:55 is
+finished afterwards and added as a comment. The next week's report closes a low one; a high or
+medium report stays open until what it asks for is done.
 
 ## Manual recovery deployment
 
