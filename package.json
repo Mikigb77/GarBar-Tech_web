@@ -12,12 +12,13 @@
     "start": "node scripts/serve.mjs",
     "typecheck": "next typegen && tsc --noEmit",
     "check": "npm run typecheck",
-    "test": "npm run test:readme && npm run test:edge && npm run test:site",
+    "test": "npm run test:readme && npm run test:repo && npm run test:edge && npm run test:site",
     "test:edge": "node --test tests/edge.test.mjs",
     "test:site": "node --test tests/site.test.mjs",
     "smoke": "node scripts/verify-site.mjs https://garbar.tech",
     "preview": "node scripts/serve.mjs",
-    "test:readme": "node --test tests/readme.test.mjs"
+    "test:readme": "node --test tests/readme.test.mjs",
+    "test:repo": "node --test tests/repo.test.mjs"
   },
   "dependencies": {
     "next": "16.4.5",
