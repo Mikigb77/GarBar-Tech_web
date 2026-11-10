@@ -13,6 +13,24 @@ const manrope = localFont({
   variable: "--font-manrope",
 });
 
+// TaskFlow's own type, used only in its product card, as on its website: Bricolage Grotesque for
+// titles and an Instrument Serif italic accent. Not preloaded, so other pages never fetch them.
+const bricolage = localFont({
+  src: "../../fonts/BricolageGrotesque.ttf",
+  display: "swap",
+  weight: "200 800",
+  variable: "--font-bricolage",
+  preload: false,
+});
+const instrumentSerif = localFont({
+  src: "../../fonts/InstrumentSerif-Italic.ttf",
+  display: "swap",
+  weight: "400",
+  style: "italic",
+  variable: "--font-instrument",
+  preload: false,
+});
+
 export default async function Layout({
   children,
   params,
@@ -26,7 +44,10 @@ export default async function Layout({
   };
   const t = copy[route.locale];
   return (
-    <html lang={route.locale} className={manrope.variable}>
+    <html
+      lang={route.locale}
+      className={`${manrope.variable} ${bricolage.variable} ${instrumentSerif.variable}`}
+    >
       <body id="top" data-section={route.section}>
         <Motion />
         <div className="scroll-progress" aria-hidden="true" />

@@ -6,6 +6,7 @@ import { Arrow, BrandMark, TaskMark } from "./Brand";
 import { CopyEmail } from "./CopyEmail";
 import { Fireflies } from "./Fireflies";
 import { IdeaConsole } from "./IdeaConsole";
+import { TaskFlowPhone, TaskIcon } from "./TaskFlowPhone";
 
 function Label({ number, children }: { number: string; children: ReactNode }) {
   return (
@@ -151,11 +152,18 @@ export function CompanyPage({ locale }: { locale: Locale }) {
               data-reveal
               data-pointer
             >
+              <div className="tf-glow" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
               <div className="product-copy">
                 <div className="product-top">
                   <span className="product-name">
                     <TaskMark />
-                    <span id="taskflow-title">TaskFlow</span>
+                    <span id="taskflow-title" className="tf-wordmark">
+                      taskflow<span className="tf-dot">.</span>
+                    </span>
                   </span>
                   <span className="product-status">
                     <span />
@@ -163,11 +171,19 @@ export function CompanyPage({ locale }: { locale: Locale }) {
                   </span>
                 </div>
                 <p className="product-category">01 · {t.projects.taskflow.category}</p>
-                <h3>{t.projects.taskflow.title}</h3>
+                <h3>
+                  {t.projects.taskflow.title}
+                  <em className="tf-accent">{t.projects.taskflow.titleAccent}</em>
+                </h3>
                 <p className="product-description">{t.projects.taskflow.body}</p>
                 <ul className="product-features" aria-label={t.projects.features}>
                   {t.projects.taskflow.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
+                    <li key={feature.text}>
+                      <span>
+                        {feature.text}
+                        {feature.pro ? <span className="tf-pro">Pro</span> : null}
+                      </span>
+                    </li>
                   ))}
                 </ul>
                 <div className="product-actions">
@@ -184,39 +200,23 @@ export function CompanyPage({ locale }: { locale: Locale }) {
                 </div>
               </div>
               <div className="product-media taskflow-media">
-                <div className="rings" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
-                </div>
-                <div className="phone">
-                  <Image
-                    src={`/images/taskflow-${locale}.png`}
-                    alt={t.projects.taskflow.imageAlt}
-                    width={780}
-                    height={1688}
-                    sizes="(max-width: 700px) 230px, 290px"
-                  />
-                </div>
-                <div className="voice-bubble" aria-hidden="true">
-                  <span className="mic">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      aria-hidden="true"
-                    >
-                      <rect x="9" y="3" width="6" height="12" rx="3" />
-                      <path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3" />
-                    </svg>
-                  </span>
-                  <span className="bubble-text">“{t.projects.taskflow.quote}”</span>
-                  <span className="console-wave">
-                    {Array.from({ length: 5 }, (_, i) => (
-                      <i key={i} />
-                    ))}
-                  </span>
+                <div className="tf-art">
+                  <div className="tf-bubble" aria-hidden="true">
+                    <span className="tf-bubble-mic">
+                      <TaskIcon name="mic" size={22} />
+                    </span>
+                    <p>{t.projects.taskflow.quote}</p>
+                  </div>
+                  <p className="tf-toast" aria-hidden="true">
+                    <span className="tf-chip-check">
+                      <TaskIcon name="check" size={14} />
+                    </span>
+                    {t.projects.taskflow.app.added}
+                  </p>
+                  <div className="tf-phone-wrap">
+                    <span className="tf-ring" aria-hidden="true" />
+                    <TaskFlowPhone locale={locale} />
+                  </div>
                 </div>
               </div>
             </article>
