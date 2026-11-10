@@ -15,7 +15,7 @@
 #    service-account key is created.
 # 4. GitHub: saves the ids from step 3 as repository variables (no secrets are needed), makes dev
 #    the default branch, deletes merged branches automatically, turns on secret scanning and push
-#    protection, protects dev and main so they only change through PRs with green checks, and
+#    protection, turns on Dependabot alerts and security updates, protects dev and main so they only change through PRs with green checks, and
 #    deletes leftover branches that are already merged.
 #
 # Settings can be overridden with environment variables, for example SKIP_BRANCH_PROTECTION=1.
@@ -260,6 +260,12 @@ gh api --method PATCH "repos/$FULL_NAME" --input - --silent <<'JSON'
 }}
 JSON
 note 'Secret scanning and push protection are on.'
+
+# Dependabot: an alert for every dependency with a known vulnerability, and a PR into dev that fixes
+# it. The monthly version updates are configured in .github/dependabot.yml.
+gh api --method PUT "repos/$FULL_NAME/vulnerability-alerts" --silent
+gh api --method PUT "repos/$FULL_NAME/automated-security-fixes" --silent
+note 'Dependabot alerts and security updates are on.'
 for feature in secret_scanning_non_provider_patterns secret_scanning_validity_checks; do
   if gh api --method PATCH "repos/$FULL_NAME" --silent \
     -f "security_and_analysis[$feature][status]=enabled" >/dev/null 2>&1; then

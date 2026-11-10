@@ -38,7 +38,8 @@ everything else itself:
 - **Deployer permissions:** Artifact Registry Writer on the image repository, Cloud Run Developer
   on this one service, and Service Account User on the runtime account. No project-wide roles.
 - **GitHub:** saves the ids as repository variables (below), makes `dev` the default branch,
-  turns on GitHub secret scanning and push protection, and protects `dev` and `main`: changes
+  turns on GitHub secret scanning and push protection and Dependabot alerts and security
+  updates, and protects `dev` and `main`: changes
   only through PRs with green **PR route**, **Website checks**, **Container image** and
   **Secret scan**, resolved conversations, no force pushes or deletion, admins included. No
   review from another person is required. `SKIP_BRANCH_PROTECTION=1` leaves protection alone.
@@ -86,8 +87,20 @@ this check, while moving a PR to another base branch still re-checks it.
    goes back to the revision that served before, and the run fails.
 5. Tests the public site through Cloudflare.
 
-Deploys run one at a time and are never cancelled half way. `dependabot.yml` keeps the
-SHA-pinned actions current with a monthly PR into `dev`.
+Deploys run one at a time and are never cancelled half way.
+
+## Dependabot
+
+Dependabot opens its PRs into `dev`, where they pass the same checks as any other PR:
+
+- **Security updates**, as soon as an advisory is published for a dependency in use. They and
+  the alerts behind them are turned on by `infra/setup.sh`; the alerts are under the
+  repository's **Security** tab.
+- **Version updates**, once a month (`.github/dependabot.yml`): one PR for the SHA-pinned
+  GitHub Actions, one for npm minor and patch updates, and one for each new npm major version.
+  `@types/node` stays on Node.js 22, the version the site runs on.
+
+They reach production with the next `dev` → `main` release.
 
 Cloudflare's `garbar-web-edge` Worker keeps the same Cloud Run URL across revisions, so ordinary
 deploys never touch `edge/`.
