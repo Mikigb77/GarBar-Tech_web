@@ -1,6 +1,9 @@
-# Keeps the SHA-pinned GitHub Actions current, with PRs into dev like any other change.
+# Dependabot keeps the dependencies current with PRs into dev, like any other change.
+# Security fixes for known vulnerabilities come as soon as an advisory is published (turned on by
+# infra/setup.sh); the version updates below come once a month.
 version: 2
 updates:
+  # The SHA-pinned GitHub Actions, all in one PR.
   - package-ecosystem: github-actions
     directory: /
     target-branch: dev
@@ -9,3 +12,18 @@ updates:
     groups:
       actions:
         patterns: ['*']
+
+  # The website's npm packages: minor and patch updates in one PR, each major version on its own.
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: monthly
+    groups:
+      npm-minor-and-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      # The types follow the Node.js major the site runs on (22, in the Dockerfile and CI).
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
