@@ -4,6 +4,7 @@ import { copy, routeInfo } from "@/content/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Motion } from "@/components/Motion";
+import { CursorGlow } from "@/components/CursorGlow";
 import "../globals.css";
 
 const manrope = localFont({
@@ -13,21 +14,20 @@ const manrope = localFont({
   variable: "--font-manrope",
 });
 
-// TaskFlow's own type, used only in its product card, as on its website: Bricolage Grotesque for
-// titles and an Instrument Serif italic accent. Not preloaded, so other pages never fetch them.
-const bricolage = localFont({
-  src: "../../fonts/BricolageGrotesque.ttf",
+// Lucid Saga's own type, used only in its product card, as on its website: Literata Display for
+// titles and Literata for its world names. Not preloaded, so other pages never fetch them.
+const literataDisplay = localFont({
+  src: "../../fonts/LiterataDisplay-Medium.woff2",
   display: "swap",
-  weight: "200 800",
-  variable: "--font-bricolage",
+  weight: "500",
+  variable: "--font-literata-display",
   preload: false,
 });
-const instrumentSerif = localFont({
-  src: "../../fonts/InstrumentSerif-Italic.ttf",
+const literata = localFont({
+  src: "../../fonts/Literata-Regular.woff2",
   display: "swap",
   weight: "400",
-  style: "italic",
-  variable: "--font-instrument",
+  variable: "--font-literata",
   preload: false,
 });
 
@@ -46,17 +46,18 @@ export default async function Layout({
   return (
     <html
       lang={route.locale}
-      className={`${manrope.variable} ${bricolage.variable} ${instrumentSerif.variable}`}
+      className={`${manrope.variable} ${literataDisplay.variable} ${literata.variable}`}
     >
       <body id="top" data-section={route.section}>
         <Motion />
+        <CursorGlow />
         <div className="scroll-progress" aria-hidden="true" />
         <a className="skip-link" href="#main">
           {t.skip}
         </a>
         <Header locale={route.locale} section={route.section} labels={t.nav} />
         {children}
-        <Footer locale={route.locale} />
+        <Footer locale={route.locale} section={route.section} />
       </body>
     </html>
   );

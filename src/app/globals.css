@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
 /*
- * GarBar. Night and paper, with the coral of the B as the one loud colour. Each product brings its
- * own: TaskFlow's Lagoon (night teal, mint and lime, as on its own website), Lucid Saga's gold. Motion is part of the design, and all of it
- * stops or settles under prefers-reduced-motion (the end of this file).
+ * GarBar. Night throughout, as TaskFlow's and Lucid Saga's sites are, with the coral of the B as the
+ * one loud colour. Each product brings its own: TaskFlow's Lagoon (night teal and mint, as on its
+ * own website), Lucid Saga's gold. Motion is part of the design, and all of it stops or settles
+ * under prefers-reduced-motion (the end of this file).
  */
 :root {
   --night: #0e0f13;
@@ -12,11 +13,14 @@
   --on-night: #f3efe6;
   --on-night-muted: #a9aab0;
   --night-line: rgb(255 255 255 / 0.1);
-  --paper: #f6f3ec;
-  --paper-2: #ece7dc;
-  --ink: #111216;
-  --muted: #5c5e57;
-  --line: #dcd6c9;
+  /* The page's surfaces. The product sites open dark, so the whole site is night: the page, a
+     band a shade lighter, and the cards on them. */
+  --paper: var(--night);
+  --paper-2: #121318;
+  --card: var(--night-2);
+  --ink: var(--on-night);
+  --muted: var(--on-night-muted);
+  --line: var(--night-line);
   --accent: #ff5b35;
   --accent-2: #ff9a3c;
   --accent-soft: #ffd9cc;
@@ -29,19 +33,20 @@
   --tf-deep: #000f12;
   --tf-hot: #3ef0b0;
   --tf-hot-hover: #7af7cb;
-  --tf-sun: #d9ff6b;
+  /* TaskFlow's site moved its lime into the palette's mint (its WD39). */
+  --tf-sun: #a9f5c8;
   --tf-tint: #8be9e0;
   --tf-tint-bg: #daf4ef;
   --tf-accent: #0a7a63;
   --tf-accent-2: #1fb5a6;
-  --tf-pink: #ff8f7a;
   --tf-on-night: #f1fbf8;
   --tf-on-night-2: #c6e4de;
   --tf-on-night-3: #96bfb8;
   --tf-page: #f3f8f4;
   --tf-ink: #062a31;
-  --font-tf-display: var(--font-bricolage), var(--font-manrope), sans-serif;
-  --font-tf-serif: var(--font-instrument), Georgia, serif;
+  /* Lucid Saga's type, from its website. */
+  --font-lucid-display: var(--font-literata-display), Georgia, "Times New Roman", serif;
+  --font-lucid: var(--font-literata), Georgia, "Times New Roman", serif;
   --radius: 28px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --font-sans: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
@@ -378,7 +383,7 @@ body:not([data-section="home"]) .header-inner,
   font-weight: 750;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent);
 }
 .section-label > span:first-child {
   display: inline-grid;
@@ -836,8 +841,9 @@ h1 em {
 .output-taskflow {
   padding: 18px;
   background:
-    radial-gradient(260px 200px at 100% 0%, rgb(139 233 224 / 0.3), transparent 70%), var(--tf-page);
-  color: var(--tf-ink);
+    radial-gradient(260px 200px at 100% 0%, rgb(31 181 166 / 0.28), transparent 70%), var(--tf-night);
+  border: 1px solid rgb(241 251 248 / 0.12);
+  color: var(--tf-on-night);
 }
 .output-head {
   display: flex;
@@ -847,9 +853,6 @@ h1 em {
   font-size: 15px;
   letter-spacing: -0.02em;
   margin-bottom: 14px;
-}
-.output-taskflow .output-head {
-  font-family: var(--font-tf-display);
 }
 .output-head .task-mark {
   width: 30px;
@@ -866,10 +869,8 @@ h1 em {
   gap: 12px;
   padding: 14px 16px;
   border-radius: 14px;
-  background: #fff;
-  box-shadow:
-    0 6px 16px rgb(6 42 49 / 0.08),
-    inset 0 0 0 1.5px rgb(62 240 176 / 0.55);
+  background: rgb(241 251 248 / 0.05);
+  box-shadow: inset 0 0 0 1px rgb(241 251 248 / 0.16);
   font-weight: 650;
   font-size: 15px;
   transition:
@@ -884,7 +885,7 @@ h1 em {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid rgb(6 42 49 / 0.35);
+  border: 2px solid rgb(241 251 248 / 0.7);
   flex: none;
 }
 .output-lucid {
@@ -914,7 +915,7 @@ h1 em {
 }
 .output-story p {
   margin-top: 8px;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-lucid);
   font-size: 15px;
   line-height: 1.55;
   color: #ede8df;
@@ -989,7 +990,7 @@ h1 em {
 .fact {
   padding: 28px 28px 30px;
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
 }
 .fact dt {
@@ -1002,10 +1003,10 @@ h1 em {
   color: var(--accent);
 }
 .fact:nth-child(2) dt {
-  color: var(--green);
+  color: var(--tf-hot);
 }
 .fact:nth-child(3) dt {
-  color: #b5822c;
+  color: var(--gold);
 }
 .fact dd {
   margin-top: 16px;
@@ -1045,6 +1046,7 @@ h1 em {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   border-radius: 36px;
+  border: 1px solid var(--night-line);
   overflow: hidden;
   isolation: isolate;
 }
@@ -1156,9 +1158,92 @@ h1 em {
   align-items: center;
   gap: 14px 20px;
 }
-.coming-soon {
-  font-size: 13px;
-  font-weight: 650;
+/* "Coming soon to Google Play", drawn as a store badge as both product sites draw it, with a glint
+   that passes now and then. Each card tints its play mark. */
+.store-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 54px;
+  padding: 8px 20px 8px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #161a1f, #07090c);
+  color: #f3efe6;
+  box-shadow:
+    inset 0 0 0 1px rgb(243 239 230 / 0.2),
+    0 12px 30px rgb(0 0 0 / 0.27);
+  overflow: hidden;
+  cursor: default;
+}
+.store-badge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--badge, var(--accent)) 22%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: badge-glint 6s var(--ease) 2s infinite;
+}
+.store-badge-play {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  fill: var(--badge, var(--accent));
+}
+.store-badge-text {
+  display: grid;
+  line-height: 1.1;
+}
+.store-badge small {
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(243 239 230 / 0.72);
+}
+.store-badge strong {
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+@keyframes badge-glint {
+  0% {
+    transform: translateX(-120%);
+  }
+  30%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+.product-taskflow {
+  --badge: var(--tf-hot);
+}
+.product-lucid {
+  --badge: var(--gold);
+}
+
+/* A soft coral glow that follows the mouse across the page (CursorGlow.tsx), as the product sites
+   do in their own colours. */
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  background: radial-gradient(
+    620px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+    rgb(255 91 53 / 0.07),
+    transparent 70%
+  );
+}
+.cursor-glow.is-on {
+  opacity: 1;
 }
 .product-media {
   position: relative;
@@ -1168,15 +1253,8 @@ h1 em {
 
 /* TaskFlow: its website's night-teal panel, mint and lime, with its own type and its app redrawn. */
 .task-mark {
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--tf-accent), var(--tf-accent-2) 55%, var(--tf-hot));
-  color: #fff;
-}
-.task-mark svg {
-  width: 62%;
-  height: 62%;
+  display: block;
+  flex: none;
 }
 .product-taskflow {
   background: var(--tf-night);
@@ -1238,10 +1316,9 @@ h1 em {
   animation: tf-drift-c 32s ease-in-out infinite alternate;
 }
 .tf-wordmark {
-  font-family: var(--font-tf-display);
   font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 800;
+  letter-spacing: -0.05em;
 }
 .tf-dot {
   color: var(--tf-hot);
@@ -1259,26 +1336,24 @@ h1 em {
   width: 8px;
   height: 8px;
   background: var(--tf-sun);
-  box-shadow: 0 0 0 4px rgb(217 255 107 / 0.2);
+  box-shadow: 0 0 0 4px rgb(169 245 200 / 0.2);
 }
 .product-taskflow .product-category {
   color: var(--tf-hot);
 }
+/* TaskFlow's site now uses garbar.tech's type: Manrope, heavy and tight, the accent words in a
+   mint gradient that shimmers. */
 .product-taskflow h3 {
-  font-family: var(--font-tf-display);
   font-size: clamp(38px, 4.3vw, 62px);
-  font-weight: 700;
+  font-weight: 750;
   line-height: 1;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.06em;
 }
 .tf-accent {
-  font-family: var(--font-tf-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.06em;
-  letter-spacing: -0.02em;
-  padding-right: 0.08em;
-  background: linear-gradient(95deg, var(--tf-sun), var(--tf-hot) 55%, var(--tf-pink));
+  padding-right: 0.04em;
+  background: linear-gradient(95deg, var(--tf-sun), var(--tf-hot) 55%, var(--tf-tint));
+  background-size: 200% 100%;
+  animation: tf-shimmer 8s ease-in-out infinite alternate;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1311,9 +1386,6 @@ h1 em {
   font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-.product-taskflow .coming-soon {
-  color: var(--tf-on-night-3);
 }
 .taskflow-media {
   display: grid;
@@ -1419,256 +1491,55 @@ h1 em {
   flex: none;
 }
 
-/* The app, redrawn as TaskFlow's website draws it. */
+/* The app itself, its dark Calendar screen in a phone, as TaskFlow's website frames it. */
 .tf-device {
   position: relative;
-  width: 296px;
-  aspect-ratio: 9 / 19;
-  padding: 9px;
-  border-radius: 46px;
-  background: linear-gradient(150deg, #2b3537, var(--tf-deep) 40%);
+  width: 300px;
+  border: 7px solid var(--tf-deep);
+  border-radius: 42px;
+  background: var(--tf-deep);
   box-shadow:
     0 40px 90px rgb(0 15 18 / 0.6),
-    0 0 0 1px rgb(241 251 248 / 0.18),
-    inset 0 0 0 1.5px rgb(255 255 255 / 0.14);
+    0 0 0 1px rgb(241 251 248 / 0.13);
+}
+/* The side button. */
+.tf-device::before {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 110px;
+  width: 3px;
+  height: 46px;
+  border-radius: 0 2px 2px 0;
+  background: var(--tf-deep);
 }
 .tf-device-camera {
   position: absolute;
   z-index: 2;
-  top: 20px;
+  top: 7px;
   left: 50%;
-  width: 11px;
-  height: 11px;
+  width: 7px;
+  height: 7px;
   translate: -50% 0;
   border-radius: 50%;
   background: var(--tf-deep);
-  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.08);
 }
 .tf-screen {
-  position: relative;
-  height: 100%;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 40px 16px 10px;
-  border-radius: 38px;
-  background:
-    radial-gradient(260px 200px at 100% 0%, rgb(139 233 224 / 0.3), transparent 70%), var(--tf-page);
-  color: var(--tf-ink);
-  text-align: left;
+  border-radius: 35px;
+  background: #032229;
 }
-.tf-app-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.tf-screen img {
+  width: 100%;
 }
-.tf-app-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-tf-display);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-.tf-app-mark {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, var(--tf-accent), var(--tf-accent-2) 55%, var(--tf-hot));
-  color: #fff;
-}
-.tf-app-avatar {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--tf-sun), var(--tf-hot));
-}
-.tf-app-kicker {
-  margin-top: 18px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #6c8285;
-}
-.tf-app-week {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
-  margin-top: 8px;
-}
-.tf-app-week span {
-  position: relative;
-  display: grid;
-  justify-items: center;
-  gap: 2px;
-  padding: 6px 0 9px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 750;
-}
-.tf-app-week small {
-  font-size: 9px;
-  font-weight: 700;
-  color: #7f9396;
-}
-.tf-app-week i {
-  position: absolute;
-  bottom: 3px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--tf-hot);
-}
-.tf-app-week .is-on {
-  background: var(--tf-night);
-  color: var(--tf-on-night);
-  box-shadow: 0 8px 18px rgb(3 34 41 / 0.35);
-}
-.tf-app-week .is-on small {
-  color: var(--tf-on-night-3);
-}
-.tf-app-day {
-  margin-top: 16px;
-  font-family: var(--font-tf-display);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-.tf-app-list {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-.tf-app-event {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 10px 12px;
-  border-radius: 16px;
-  background: var(--tf-tint-bg);
-  border-left: 4px solid var(--tf-accent);
-}
-.tf-app-event time {
-  font-size: 11px;
-  font-weight: 700;
-  color: #4f6a6e;
-}
-.tf-app-event strong,
-.tf-app-task strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 750;
-  line-height: 1.25;
-}
-.tf-app-event small {
-  display: block;
-  font-size: 11px;
-  color: #4f6a6e;
-}
-.tf-app-task {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow:
-    0 6px 16px rgb(6 42 49 / 0.08),
-    inset 0 0 0 1.5px rgb(62 240 176 / 0.55);
-}
-/* The two new tasks pop in once the card scrolls into view. */
-[data-motion="full"] .product-taskflow[data-visible] .tf-app-task {
-  animation: tf-pop 0.7s var(--ease) both;
-  animation-delay: calc(0.9s + var(--n, 0) * 0.25s);
-}
-[data-motion="full"] .product-taskflow:not([data-visible]) .tf-app-task {
-  opacity: 0;
-}
-.tf-app-check {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid rgb(6 42 49 / 0.35);
-  flex: none;
-}
-.tf-app-new {
-  margin-left: auto;
-  color: var(--tf-hot);
-  flex: none;
-}
-.tf-app-fab {
-  position: relative;
-  align-self: center;
-  margin-top: auto;
-  margin-bottom: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 22px 13px 16px;
-  border-radius: 999px;
-  background: var(--tf-hot);
-  color: var(--tf-night);
-  font-size: 14px;
-  font-weight: 800;
-  white-space: nowrap;
-  box-shadow: 0 12px 28px rgb(62 240 176 / 0.45);
-}
-.tf-app-fab-ring {
-  position: absolute;
-  inset: -5px;
-  border-radius: inherit;
-  border: 2px solid rgb(62 240 176 / 0.55);
-  animation: tf-ring-out 2.4s ease-out infinite;
-}
-.tf-app-tabs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding-top: 8px;
-  border-top: 1px solid rgb(6 42 49 / 0.09);
-}
-.tf-app-tabs span {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  padding: 5px 0;
-  font-size: 9px;
-  font-weight: 700;
-  color: #7f9396;
-}
-.tf-app-tabs .is-on {
-  color: var(--tf-accent);
-}
-.tf-app-tabs .is-on svg {
-  padding: 2px 10px;
-  width: 38px;
-  border-radius: 999px;
-  background: var(--tf-tint-bg);
-  box-sizing: content-box;
+@keyframes tf-shimmer {
+  to {
+    background-position: 100% 0;
+  }
 }
 @keyframes tf-float {
   50% {
     translate: 0 -11px;
-  }
-}
-@keyframes tf-pop {
-  from {
-    opacity: 0;
-    transform: translateY(14px) scale(0.9);
-  }
-}
-@keyframes tf-ring-out {
-  from {
-    opacity: 1;
-    scale: 1;
-  }
-  to {
-    opacity: 0;
-    scale: 1.25;
   }
 }
 @keyframes tf-drift-a {
@@ -1710,14 +1581,18 @@ h1 em {
 .product-lucid .product-features li::before {
   background-color: #8c6a32;
 }
-.product-lucid .product-description,
-.product-lucid .coming-soon {
+.product-lucid .product-description {
   color: #b4b8c3;
 }
 .product-lucid h3 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-lucid-display);
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
+}
+.product-lucid .product-name {
+  font-family: var(--font-lucid-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 .lucid-media .lucid-art {
   object-fit: cover;
@@ -1784,7 +1659,7 @@ h1 em {
   inset: auto 0 0;
   padding: 30px 12px 11px;
   background: linear-gradient(transparent, rgb(7 8 12 / 0.92));
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: var(--font-lucid);
   font-size: 13px;
   line-height: 1.3;
   color: #f6dfa8;
@@ -1822,7 +1697,7 @@ h1 em {
   align-items: start;
   padding: 34px 32px;
   border-radius: var(--radius);
-  background: #fff;
+  background: var(--card);
   border: 1px solid var(--line);
   overflow: hidden;
   isolation: isolate;
@@ -1867,7 +1742,7 @@ h1 em {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: var(--paper);
+  background: rgb(255 255 255 / 0.06);
   font-size: 22px;
   transition:
     transform 0.6s var(--ease),
@@ -1906,9 +1781,6 @@ h1 em {
 }
 .aurora-contact .blob {
   opacity: 0.35;
-}
-.contact-section .section-label {
-  color: var(--on-night-muted);
 }
 .contact-grid {
   display: grid;
@@ -2053,12 +1925,14 @@ h1 em {
   color: var(--on-night-muted);
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer: the one the GarBar product sites share ---------- */
 
 .site-footer {
+  position: relative;
   background: var(--night);
   color: var(--on-night);
-  padding-top: 70px;
+  padding-top: 64px;
+  border-top: 1px solid var(--night-line);
   overflow: hidden;
 }
 .footer-grid {
@@ -2067,35 +1941,38 @@ h1 em {
   gap: 40px;
 }
 .footer-brand p {
-  margin-top: 22px;
-  font-size: 16px;
+  margin-top: 18px;
+  font-size: 15px;
   line-height: 1.55;
   white-space: pre-line;
   color: var(--on-night-muted);
 }
-.footer-location {
-  display: block;
-  margin-top: 18px;
-  font-size: 12px;
-  color: #6f7178;
+.footer-brand .footer-made {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 13.5px;
 }
 .site-footer nav {
   display: grid;
   align-content: start;
-  gap: 14px;
+  justify-items: start;
+  gap: 12px;
 }
 .site-footer h2 {
   font-size: 12px;
   font-weight: 750;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #74767d;
-  margin-bottom: 6px;
+  color: #8a8c93;
+  margin-bottom: 4px;
 }
 .site-footer nav a {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  min-height: 24px;
   width: fit-content;
   font-size: 15px;
   font-weight: 550;
@@ -2107,49 +1984,101 @@ h1 em {
   color: var(--accent);
 }
 .site-footer nav .arrow {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
+  margin-left: -2px;
+  opacity: 0.6;
+  transition:
+    opacity 0.2s,
+    transform 0.3s var(--ease);
 }
-.footer-wordmark {
-  margin-top: 30px;
-  margin-bottom: -0.14em;
-  text-align: center;
-  font-size: clamp(90px, 21vw, 330px);
-  font-weight: 800;
-  line-height: 0.8;
-  letter-spacing: -0.075em;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.02));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  user-select: none;
+.site-footer nav a:hover .arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+/* Each product's own icon, the size of a line of text. */
+.site-footer .footer-product-mark {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
 }
 .footer-bottom {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 20px;
-  padding: 24px 0 30px;
+  gap: 18px 24px;
+  margin-top: 48px;
+  padding: 20px 0 6px;
   border-top: 1px solid var(--night-line);
-  font-size: 12px;
-  color: #74767d;
+  font-size: 12.5px;
+  color: #8a8c93;
 }
-.footer-bottom p span {
-  margin-left: 8px;
+.footer-fine {
+  display: grid;
+  gap: 2px;
 }
-.footer-bottom a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.footer-fine span {
+  margin-left: 6px;
+}
+.site-footer .footer-languages {
+  display: flex;
+  gap: 4px;
+}
+.footer-languages a {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
   color: var(--on-night-muted);
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
-.footer-bottom a:hover {
+.footer-languages a:hover {
+  color: var(--on-night);
+  background: rgb(255 255 255 / 0.06);
+}
+.footer-languages a[aria-current="page"] {
+  background: rgb(255 255 255 / 0.1);
   color: var(--on-night);
 }
-.footer-bottom .arrow {
+.footer-back {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--on-night-muted);
+}
+.footer-back svg {
   width: 14px;
   height: 14px;
-  transform: rotate(-45deg);
+  transition: transform 0.3s var(--ease);
+}
+.footer-back:hover {
+  color: var(--accent);
+}
+.footer-back:hover svg {
+  transform: translateY(-3px);
+}
+/* The name in coral outline, cut off by the bottom of the page, as the other GarBar sites end. */
+.footer-wordmark {
+  height: 0.74em;
+  margin-top: 28px;
+  overflow: hidden;
+  text-align: center;
+  white-space: nowrap;
+  font-size: clamp(90px, 21vw, 330px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 91 53 / 0.4);
+  -webkit-mask-image: linear-gradient(180deg, #000 58%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 58%, transparent 100%);
+  user-select: none;
+  pointer-events: none;
 }
 
 /* ---------- Information and policy pages ---------- */
@@ -2256,7 +2185,7 @@ h1 em {
   padding: 12px 18px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: #fff;
+  background: var(--card);
   font-size: 14px;
   font-weight: 650;
   transition:
@@ -2639,23 +2568,12 @@ h1 em {
     font-size: 14px;
   }
   .tf-device {
-    width: 250px;
-    padding: 8px;
-    border-radius: 40px;
+    width: 252px;
+    border-width: 6px;
+    border-radius: 36px;
   }
   .tf-screen {
-    border-radius: 33px;
-    padding: 36px 13px 8px;
-  }
-  .tf-app-day {
-    font-size: 24px;
-  }
-  .tf-app-list {
-    gap: 6px;
-  }
-  .tf-app-event,
-  .tf-app-task {
-    padding: 9px 10px;
+    border-radius: 30px;
   }
   .lucid-media {
     min-height: 280px;
@@ -2692,12 +2610,18 @@ h1 em {
     gap: 36px 24px;
   }
   .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr;
+    justify-items: start;
   }
-  .footer-bottom p span {
+  .footer-fine span {
     display: block;
-    margin: 4px 0 0;
+    margin: 2px 0 0;
+  }
+  .footer-languages {
+    margin-left: -14px;
+  }
+  .footer-back {
+    justify-self: start;
   }
   .information-page {
     padding-top: calc(var(--header-h) + 50px);
@@ -2777,5 +2701,8 @@ h1 em {
     justify-content: center;
     row-gap: 8px;
     padding-inline: 20px;
+  }
+  .cursor-glow {
+    display: none;
   }
 }

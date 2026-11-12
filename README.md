@@ -32,10 +32,11 @@ is no automatic language redirect or language cookie.
 - `src/components/`: the company and information pages, navigation, footer and email copy button.
 - `src/app/[[...path]]/`: statically generated routes, locale-aware HTML and metadata.
 - `src/app/globals.css`: layout, responsive styling and reduced-motion support.
-- `public/images/`: Lucid Saga artwork, reused from its repositories.
-- `src/components/TaskFlowPhone.tsx`: the TaskFlow app as its own website draws it, in its Lagoon palette.
+- `public/images/`: Lucid Saga's gate, icon, scene and world covers, copied from its website, and
+  in `taskflow/` TaskFlow's icon and the app's own Calendar screens, copied from its website.
+- `src/components/TaskFlowPhone.tsx`: TaskFlow's real Calendar screen in a phone, as its website shows it.
 - `src/fonts/`: the self-hosted fonts and their SIL Open Font Licenses: Manrope for the site, and
-  TaskFlow's Bricolage Grotesque and Instrument Serif italic for its product card.
+  Lucid Saga's Literata and Literata Display for its product card.
 - `scripts/create-brand-assets.mjs`: renders the shared GB artwork into SVG, social and Apple icons.
 - `design/brand/archive/g-mark-v1/`: the preserved original G logo and favicon, independent of builds.
 
