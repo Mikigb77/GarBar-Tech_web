@@ -34,7 +34,8 @@ export async function verifySite(base) {
     if (!section) {
       // The TaskFlow card shows the app's own screen, in the page's language, as TaskFlow's site does.
       assert.ok(html.includes(`/images/taskflow/hero-calendar-${locale}-dark.png`), `TaskFlow screen: ${path}`);
-      assert.ok(html.includes("/images/lucid-saga-gate.webp"), `Lucid Saga gate: ${path}`);
+      // Lucid Saga's 4K gate, under a content-hashed name so no cache can serve an older picture.
+      assert.match(html, /\/_next\/static\/media\/lucid-saga-gate\.[\w-]+\.webp/, `Lucid Saga gate: ${path}`);
       assert.equal(html.match(/class="store-badge"/g)?.length, 2, `store badges: ${path}`);
     }
     if (path.includes("/privacy/")) {

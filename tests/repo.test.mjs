@@ -31,3 +31,13 @@ test("one Node image in both stages of the Dockerfile, the one CI and the deploy
     );
   }
 });
+
+test("Lucid Saga's card shows its website's high-resolution gate, not a smaller copy", async () => {
+  const { default: sharp } = await import("sharp");
+  const { width, height, format } = await sharp(
+    new URL("../src/assets/lucid-saga-gate.webp", import.meta.url).pathname,
+  ).metadata();
+  // LucidSaga_Web serves its 4K repaint at 2000 px (src/assets/gate.webp); the old copy was 1024.
+  assert.equal(format, "webp");
+  assert.ok(width >= 2000 && height >= 2000, `gate is ${width}×${height}`);
+});

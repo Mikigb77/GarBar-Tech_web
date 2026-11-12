@@ -9,6 +9,7 @@ import {
   type Locale,
   type Section,
 } from "@/content/site";
+import lucidIcon from "@/assets/lucid-saga-icon.png";
 import { Arrow, BrandLockup, TaskMark } from "./Brand";
 
 const languageNames: Record<Locale, string> = { en: "English", es: "Español", ca: "Català" };
@@ -50,7 +51,7 @@ export function Footer({ locale, section }: { locale: Locale; section: Section }
           <a href={lucidSagaUrl(locale)} target="_blank" rel="noopener noreferrer">
             <Image
               className="footer-product-mark"
-              src="/images/lucid-saga-icon.png"
+              src={lucidIcon}
               alt=""
               width={22}
               height={22}

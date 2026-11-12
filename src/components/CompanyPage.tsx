@@ -2,6 +2,8 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { company, copy, lucidSagaUrl, taskflowUrl, type Locale } from "@/content/site";
 import { worlds } from "@/content/worlds";
+import lucidGate from "@/assets/lucid-saga-gate.webp";
+import lucidIcon from "@/assets/lucid-saga-icon.png";
 import { Arrow, BrandMark, StoreBadge, TaskMark } from "./Brand";
 import { CopyEmail } from "./CopyEmail";
 import { Fireflies } from "./Fireflies";
@@ -231,7 +233,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
               <div className="product-media lucid-media">
                 <Image
                   className="lucid-art"
-                  src="/images/lucid-saga-gate.webp"
+                  src={lucidGate}
                   alt={t.projects.lucid.imageAlt}
                   fill
                   sizes="(max-width: 950px) 100vw, 50vw"
@@ -241,7 +243,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
               <div className="product-copy">
                 <div className="product-top">
                   <span className="product-name">
-                    <Image src="/images/lucid-saga-icon.png" alt="" width={40} height={40} />
+                    <Image src={lucidIcon} alt="" width={40} height={40} />
                     <span id="lucid-title">Lucid Saga</span>
                   </span>
                   <span className="product-status">
