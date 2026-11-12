@@ -14,8 +14,9 @@
 #    Identity Federation so only this repository's deploy workflow, on main, can deploy. No
 #    service-account key is created.
 # 4. GitHub: saves the ids from step 3 as repository variables (no secrets are needed), makes dev
-#    the default branch, deletes merged branches automatically, protects dev and main so they only
-#    change through PRs with green checks, and deletes leftover branches that are already merged.
+#    the default branch, deletes merged branches automatically, turns on secret scanning and push
+#    protection, turns on Dependabot alerts and security updates, protects dev and main so they only change through PRs with green checks, and
+#    deletes leftover branches that are already merged.
 #
 # Settings can be overridden with environment variables, for example SKIP_BRANCH_PROTECTION=1.
 set -euo pipefail
@@ -251,6 +252,29 @@ fi
 gh repo edit "$FULL_NAME" --enable-squash-merge --enable-merge-commit --delete-branch-on-merge >/dev/null
 note 'Squash and merge commits allowed; a branch is deleted when its PR merges.'
 
+# The repository is public: GitHub scans every push for secrets and blocks a push that has one.
+gh api --method PATCH "repos/$FULL_NAME" --input - --silent <<'JSON'
+{"security_and_analysis": {
+  "secret_scanning": {"status": "enabled"},
+  "secret_scanning_push_protection": {"status": "enabled"}
+}}
+JSON
+note 'Secret scanning and push protection are on.'
+
+# Dependabot: an alert for every dependency with a known vulnerability, and a PR into dev that fixes
+# it. The weekly version updates are configured in .github/dependabot.yml.
+gh api --method PUT "repos/$FULL_NAME/vulnerability-alerts" --silent
+gh api --method PUT "repos/$FULL_NAME/automated-security-fixes" --silent
+note 'Dependabot alerts and security updates are on.'
+for feature in secret_scanning_non_provider_patterns secret_scanning_validity_checks; do
+  if gh api --method PATCH "repos/$FULL_NAME" --silent \
+    -f "security_and_analysis[$feature][status]=enabled" >/dev/null 2>&1; then
+    note "${feature//_/ } on."
+  else
+    note "${feature//_/ } is not offered for this repository; skipped."
+  fi
+done
+
 if [[ -n $SKIP_BRANCH_PROTECTION ]]; then
   note 'Branch protection skipped (SKIP_BRANCH_PROTECTION).'
 else
@@ -260,7 +284,7 @@ else
     if [[ $branch == dev ]]; then strict=true; fi
     gh api --method PUT "repos/$FULL_NAME/branches/$branch/protection" --input - --silent <<JSON
 {
-  "required_status_checks": {"strict": $strict, "contexts": ["PR route", "Website checks", "Container image"]},
+  "required_status_checks": {"strict": $strict, "contexts": ["PR route", "Website checks", "Container image", "Secret scan"]},
   "enforce_admins": true,
   "required_pull_request_reviews": {
     "dismiss_stale_reviews": true,
@@ -273,7 +297,7 @@ else
   "allow_deletions": false
 }
 JSON
-    note "$branch only changes through PRs with green 'PR route', 'Website checks' and 'Container image'."
+    note "$branch only changes through PRs with green 'PR route', 'Website checks', 'Container image' and 'Secret scan'."
   done
 fi
 

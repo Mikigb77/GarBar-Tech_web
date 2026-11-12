@@ -1,3 +1,5 @@
+**Live site: https://garbar.tech**
+
 # GarBar
 
 The company website for **GARBAR, IN-TEC, S.L.**, the Barcelona technology company behind
@@ -30,8 +32,11 @@ is no automatic language redirect or language cookie.
 - `src/components/`: the company and information pages, navigation, footer and email copy button.
 - `src/app/[[...path]]/`: statically generated routes, locale-aware HTML and metadata.
 - `src/app/globals.css`: layout, responsive styling and reduced-motion support.
-- `public/images/`: actual TaskFlow app screens and Lucid Saga artwork, reused from their repositories.
-- `src/fonts/`: the self-hosted Manrope font and its SIL Open Font License.
+- `public/images/`: Lucid Saga's gate, icon, scene and world covers, copied from its website, and
+  in `taskflow/` TaskFlow's icon and the app's own Calendar screens, copied from its website.
+- `src/components/TaskFlowPhone.tsx`: TaskFlow's real Calendar screen in a phone, as its website shows it.
+- `src/fonts/`: the self-hosted fonts and their SIL Open Font Licenses: Manrope for the site, and
+  Lucid Saga's Literata and Literata Display for its product card.
 - `scripts/create-brand-assets.mjs`: renders the shared GB artwork into SVG, social and Apple icons.
 - `design/brand/archive/g-mark-v1/`: the preserved original G logo and favicon, independent of builds.
 
@@ -45,6 +50,8 @@ The public website is deployed to Cloud Run in the `garbar-tech` project, with C
 `garbar.tech` to it. It automatically scales to zero when idle, with at most three instances.
 Build and deployment instructions: [infra/DEPLOY.md](infra/DEPLOY.md). The one-time setup is a
 single script run in WSL, `bash infra/setup.sh`, which signs in and configures Google Cloud and GitHub.
+The live URL stays on this README's first line: CI fails if it differs from the URL the deploy
+publishes.
 
 Feature PRs target the default `dev` branch and run GitHub Actions CI. A merged `dev` → `main`
 release PR runs checks again and deploys production automatically. The branch flow and tests are

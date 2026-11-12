@@ -7,7 +7,26 @@ out/
 .openai/*.local.*
 *.tsbuildinfo
 next-env.d.ts
-.env*
 gha-creds-*.json
 npm-debug.log*
 .DS_Store
+
+# Secrets and credentials: never commit them (the repository is public).
+.env*
+!.env.example
+.dev.vars*
+.wrangler/
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*credentials*.json
+*service-account*.json
+*-key.json
+.credentials/
+.secrets/

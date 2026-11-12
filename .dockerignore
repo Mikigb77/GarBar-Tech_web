@@ -14,3 +14,15 @@ tests
 *.tar.gz
 *.tsbuildinfo
 npm-debug.log*
+.dev.vars*
+.wrangler
+.npmrc
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*service-account*.json
+*-key.json
+.credentials
+.secrets

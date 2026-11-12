@@ -25,6 +25,18 @@ export async function verifySite(base) {
     const taskflow = locale === "en" ? "/?lang=en" : `/${locale}/`;
     assert.ok(html.includes(`href="https://taskflow.garbar.tech${taskflow}"`), `TaskFlow link: ${path}`);
     assert.ok(html.includes(`href="https://lucidsaga.garbar.tech/${locale}"`), `Lucid Saga link: ${path}`);
+    const section = path.split("/").slice(2).join("/");
+    for (const other of locales) {
+      // Once in the header and once in the footer, each keeping the page being read.
+      const links = html.split(`href="/${other}/${section}" hrefLang="${other}"`).length - 1;
+      assert.ok(links >= 2, `language links to ${other}: ${path}`);
+    }
+    if (!section) {
+      // The TaskFlow card shows the app's own screen, in the page's language, as TaskFlow's site does.
+      assert.ok(html.includes(`/images/taskflow/hero-calendar-${locale}-dark.png`), `TaskFlow screen: ${path}`);
+      assert.ok(html.includes("/images/lucid-saga-gate.webp"), `Lucid Saga gate: ${path}`);
+      assert.equal(html.match(/class="store-badge"/g)?.length, 2, `store badges: ${path}`);
+    }
     if (path.includes("/privacy/")) {
       assert.match(html, /Google Cloud Run/, path);
       assert.match(html, /Cloudflare/, path);

@@ -22,8 +22,8 @@ Production accepts only the exact merge commit of a merged `dev` → `main` PR; 
 
 ## Protected branches
 
-`dev` and `main` only change through PRs. Both need green **PR route**, **Website checks** and
-**Container image** and resolved conversations; PRs into `dev` must also be up to date with it. Force pushes
+`dev` and `main` only change through PRs. Both need green **PR route**, **Website checks**,
+**Container image** and **Secret scan** and resolved conversations; PRs into `dev` must also be up to date with it. Force pushes
 and deletion are blocked, for admins too, and no review from another person is required. The
 protection is set by `infra/setup.sh` ([infra/DEPLOY.md](infra/DEPLOY.md)).
 
@@ -41,3 +41,15 @@ npm test
 
 The site tests start and stop their own static server on `127.0.0.1:43107`. They do not call the
 product websites or need cloud credentials. `npm run smoke` separately checks the published site.
+
+## Secrets
+
+The repository is public, and so are its history, PRs and Actions logs. Never commit a key,
+token, password or `.env` file, even to delete it in the next commit: anyone can read the old
+commit. The deploy needs no secret (it signs in with Workload Identity Federation), and
+`.gitignore` blocks the usual credential files.
+
+Three things catch a slip. GitHub push protection rejects a push that contains a known kind of
+secret; the **Secret scan** check runs [gitleaks](https://github.com/gitleaks/gitleaks) over the
+whole history of every PR and fails it on a finding; and GitHub secret scanning alerts on anything
+already pushed. If a secret does reach GitHub, revoke it at its provider first, then clean up.
