@@ -53,23 +53,12 @@ export function Arrow({
   );
 }
 
-/** TaskFlow's mark as its website and app draw it: a double tick on a Lagoon gradient tile. */
+/**
+ * TaskFlow's mark: its website's favicon (TaskFlowWeb `public/favicon.svg`), the white double tick
+ * on the Lagoon gradient tile, as the app's icon has it too.
+ */
 export function TaskMark({ className = "" }: { className?: string }) {
-  return (
-    <span className={`task-mark ${className}`} aria-hidden="true">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m3 12 5 5L19 6" />
-        <path d="m13 14 3 3 7-8" />
-      </svg>
-    </span>
-  );
+  return <img className={`task-mark ${className}`} src="/images/taskflow/icon.svg" alt="" />;
 }
 
 export function Spark({ className = "" }: { className?: string }) {
@@ -85,5 +74,23 @@ export function Spark({ className = "" }: { className?: string }) {
       ))}
       <circle cx="50" cy="50" r="18" fill="currentColor" />
     </svg>
+  );
+}
+
+/**
+ * "Coming soon to Google Play", drawn as a store badge the way TaskFlow's and Lucid Saga's sites
+ * draw their own. Not a link and not Google's badge: neither app is on Google Play yet.
+ */
+export function StoreBadge({ store }: { store: { top: string; name: string } }) {
+  return (
+    <p className="store-badge">
+      <svg className="store-badge-play" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3.8v16.4c0 .8.9 1.3 1.6.9l13.3-8.2c.6-.4.6-1.3 0-1.7L7.6 2.9C6.9 2.5 6 3 6 3.8Z" />
+      </svg>
+      <span className="store-badge-text">
+        <small>{store.top}</small>{" "}
+        <strong>{store.name}</strong>
+      </span>
+    </p>
   );
 }

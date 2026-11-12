@@ -87,7 +87,7 @@ const en = {
     accent: "One curiosity.",
     intro: "One helps you get through the day. The other takes you somewhere else entirely.",
     development: "In development",
-    coming: "Coming soon to Android",
+    store: { top: "Coming soon to", name: "Google Play" },
     visit: "Explore",
     features: "A closer look",
     taskflow: {
@@ -105,16 +105,7 @@ const en = {
       quote: "“Tomorrow, call the dentist and buy bread.”",
       imageAlt:
         "TaskFlow on an Android phone: tomorrow’s calendar with two tasks, Call the dentist and Buy bread, and the Add a task button.",
-      app: {
-        week: "Your week",
-        weekdays: ["M", "T", "W", "T", "F", "S", "S"],
-        day: "Tomorrow",
-        event: { title: "A fresh start", detail: "Review this week’s plans" },
-        tasks: ["Call the dentist", "Buy bread"],
-        added: "2 things to add",
-        addTask: "Add a task",
-        tabs: ["Calendar", "Tasks", "Notes", "Settings"],
-      },
+      added: "2 things to add",
     },
     lucid: {
       category: "For the imagination",
@@ -170,6 +161,8 @@ const en = {
     terms: "Terms & conditions",
     rights: "All rights reserved.",
     back: "Back to top",
+    madeIn: "Made in Barcelona.",
+    trademark: "Google Play is a trademark of Google LLC.",
   },
   legal: {
     label: "Company information",
@@ -252,7 +245,7 @@ const es: Copy = {
     accent: "Una misma curiosidad.",
     intro: "Uno te ayuda con tu día a día. El otro te lleva a otro lugar.",
     development: "En desarrollo",
-    coming: "Próximamente en Android",
+    store: { top: "Próximamente en", name: "Google Play" },
     visit: "Descubre",
     features: "Más de cerca",
     taskflow: {
@@ -270,16 +263,7 @@ const es: Copy = {
       quote: "«Mañana, llamar al dentista y comprar pan»",
       imageAlt:
         "TaskFlow en un móvil Android: el calendario de mañana con dos tareas, Llamar al dentista y Comprar pan, y el botón Añadir tarea.",
-      app: {
-        week: "Tu semana",
-        weekdays: ["L", "M", "X", "J", "V", "S", "D"],
-        day: "Mañana",
-        event: { title: "Un buen comienzo", detail: "Repasa los planes de la semana" },
-        tasks: ["Llamar al dentista", "Comprar pan"],
-        added: "2 cosas para añadir",
-        addTask: "Añadir tarea",
-        tabs: ["Calendario", "Tareas", "Notas", "Ajustes"],
-      },
+      added: "2 cosas para añadir",
     },
     lucid: {
       category: "Para la imaginación",
@@ -335,6 +319,8 @@ const es: Copy = {
     terms: "Términos y condiciones",
     rights: "Todos los derechos reservados.",
     back: "Volver arriba",
+    madeIn: "Hecho en Barcelona.",
+    trademark: "Google Play es una marca de Google LLC.",
   },
   legal: {
     label: "Información de la empresa",
@@ -416,7 +402,7 @@ const ca: Copy = {
     accent: "Una mateixa curiositat.",
     intro: "Un t’ajuda amb el dia a dia. L’altre t’endu a un altre lloc.",
     development: "En desenvolupament",
-    coming: "Aviat a Android",
+    store: { top: "Aviat a", name: "Google Play" },
     visit: "Descobreix",
     features: "Més de prop",
     taskflow: {
@@ -434,16 +420,7 @@ const ca: Copy = {
       quote: "«Demà, trucar al dentista i comprar pa»",
       imageAlt:
         "TaskFlow en un mòbil Android: el calendari de demà amb dues tasques, Trucar al dentista i Comprar pa, i el botó Afegeix una tasca.",
-      app: {
-        week: "La teva setmana",
-        weekdays: ["dl", "dt", "dc", "dj", "dv", "ds", "dg"],
-        day: "Demà",
-        event: { title: "Un bon començament", detail: "Repassa els plans de la setmana" },
-        tasks: ["Trucar al dentista", "Comprar pa"],
-        added: "2 coses per afegir",
-        addTask: "Afegeix una tasca",
-        tabs: ["Calendari", "Tasques", "Notes", "Configuració"],
-      },
+      added: "2 coses per afegir",
     },
     lucid: {
       category: "Per a la imaginació",
@@ -499,6 +476,8 @@ const ca: Copy = {
     terms: "Termes i condicions",
     rights: "Tots els drets reservats.",
     back: "Torna a dalt",
+    madeIn: "Fet a Barcelona.",
+    trademark: "Google Play és una marca de Google LLC.",
   },
   legal: {
     label: "Informació de l’empresa",

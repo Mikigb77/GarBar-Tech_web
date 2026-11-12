@@ -2,7 +2,7 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { company, copy, lucidSagaUrl, taskflowUrl, type Locale } from "@/content/site";
 import { worlds } from "@/content/worlds";
-import { Arrow, BrandMark, TaskMark } from "./Brand";
+import { Arrow, BrandMark, StoreBadge, TaskMark } from "./Brand";
 import { CopyEmail } from "./CopyEmail";
 import { Fireflies } from "./Fireflies";
 import { IdeaConsole } from "./IdeaConsole";
@@ -196,7 +196,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
                     {t.projects.visit} TaskFlow
                     <Arrow diagonal />
                   </a>
-                  <span className="coming-soon">{t.projects.coming}</span>
+                  <StoreBadge store={t.projects.store} />
                 </div>
               </div>
               <div className="product-media taskflow-media">
@@ -211,7 +211,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
                     <span className="tf-chip-check">
                       <TaskIcon name="check" size={14} />
                     </span>
-                    {t.projects.taskflow.app.added}
+                    {t.projects.taskflow.added}
                   </p>
                   <div className="tf-phone-wrap">
                     <span className="tf-ring" aria-hidden="true" />
@@ -241,7 +241,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
               <div className="product-copy">
                 <div className="product-top">
                   <span className="product-name">
-                    <Image src="/images/lucid-saga-icon.png" alt="" width={36} height={36} />
+                    <Image src="/images/lucid-saga-icon.png" alt="" width={40} height={40} />
                     <span id="lucid-title">Lucid Saga</span>
                   </span>
                   <span className="product-status">
@@ -267,7 +267,7 @@ export function CompanyPage({ locale }: { locale: Locale }) {
                     {t.projects.visit} Lucid Saga
                     <Arrow diagonal />
                   </a>
-                  <span className="coming-soon">{t.projects.coming}</span>
+                  <StoreBadge store={t.projects.store} />
                 </div>
               </div>
               <div className="worlds">
