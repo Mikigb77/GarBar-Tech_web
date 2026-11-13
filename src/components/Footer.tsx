@@ -40,6 +40,7 @@ export function Footer({ locale, section }: { locale: Locale; section: Section }
           <a href={`${home}#company`}>{t.nav.about}</a>
           <a href={`${home}#contact`}>{t.contact.label}</a>
           <a href={`mailto:${company.email}`}>{company.email}</a>
+          <a href={`mailto:${company.supportEmail}`}>{company.supportEmail}</a>
         </nav>
         <nav aria-labelledby="footer-products">
           <h2 id="footer-products">{t.footer.products}</h2>

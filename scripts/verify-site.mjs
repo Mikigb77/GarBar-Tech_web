@@ -19,8 +19,11 @@ export async function verifySite(base) {
     assert.match(html, new RegExp(`<html[^>]+lang="${locale}"`), path);
     assert.ok(html.includes(`rel="canonical" href="https://garbar.tech${canonical}"`), `canonical: ${path}`);
     assert.ok(html.includes('content="index, follow"'), `indexing: ${path}`);
-    assert.ok(html.includes("info@garbar.tech"), `contact: ${path}`);
-    assert.ok(!html.includes("main@garbar.tech"), `old contact: ${path}`);
+    assert.ok(html.includes('href="mailto:garbar@garbar.tech"'), `contact: ${path}`);
+    assert.ok(html.includes('href="mailto:garbar.support@garbar.tech"'), `support: ${path}`);
+    for (const old of ["info@garbar.tech", "main@garbar.tech"]) {
+      assert.ok(!html.includes(old), `old contact ${old}: ${path}`);
+    }
     assert.ok(!html.includes("chatgpt.site"), `private preview URL: ${path}`);
     const taskflow = locale === "en" ? "/?lang=en" : `/${locale}/`;
     assert.ok(html.includes(`href="https://taskflow.garbar.tech${taskflow}"`), `TaskFlow link: ${path}`);

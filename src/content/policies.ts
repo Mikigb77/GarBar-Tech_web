@@ -15,6 +15,7 @@ export type PolicyDocument = {
   sections: PolicySection[];
 };
 const email = company.email;
+const supportEmail = company.supportEmail;
 const cloudRun = hostingProvider === "google-cloud-run";
 const providers = [
   cloudRun
@@ -30,7 +31,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Privacy policy",
       intro:
         "How GarBar handles information when you visit our company website or contact us. TaskFlow and Lucid Saga have their own privacy policies for their apps and services.",
-      updated: "Updated 8 November 2026",
+      updated: "Updated 13 November 2026",
       contents: "In this policy",
       sections: [
         {
@@ -126,7 +127,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Terms & conditions",
       intro:
         "Terms for visiting the GarBar company website. The use of TaskFlow, Lucid Saga and any paid product is governed by the terms presented for that product.",
-      updated: "Effective 8 November 2026",
+      updated: "Effective 13 November 2026",
       contents: "In these terms",
       sections: [
         {
@@ -178,7 +179,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "law",
           title: "7. Questions, law and changes",
           paragraphs: [
-            `Send questions, complaints or reports about this website to ${email}. We handle them within the applicable legal deadlines. Spanish law applies without removing mandatory protections that apply to a consumer in their country of habitual residence. Courts are determined by the applicable jurisdiction rules, not by an exclusive requirement to use our home city.`,
+            `Send questions and complaints to ${email}, and write to our support team at ${supportEmail} for help with this website or to report a problem with it. We handle them within the applicable legal deadlines. Spanish law applies without removing mandatory protections that apply to a consumer in their country of habitual residence. Courts are determined by the applicable jurisdiction rules, not by an exclusive requirement to use our home city.`,
             "Updates are identified by their effective date and apply prospectively, subject to any notice required by law. They do not remove accrued rights or retrospectively change a completed product purchase. English, Spanish and Catalan versions are intended to convey the same conditions.",
           ],
         },
@@ -190,7 +191,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Política de privacidad",
       intro:
         "Cómo trata GarBar la información cuando visitas nuestra web corporativa o contactas con nosotros. TaskFlow y Lucid Saga tienen sus propias políticas para sus aplicaciones y servicios.",
-      updated: "Actualizada el 8 de noviembre de 2026",
+      updated: "Actualizada el 13 de noviembre de 2026",
       contents: "En esta política",
       sections: [
         {
@@ -286,7 +287,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Términos y condiciones",
       intro:
         "Condiciones de visita de la web corporativa de GarBar. El uso de TaskFlow, Lucid Saga y cualquier producto de pago se rige por las condiciones presentadas para ese producto.",
-      updated: "En vigor desde el 8 de noviembre de 2026",
+      updated: "En vigor desde el 13 de noviembre de 2026",
       contents: "En estas condiciones",
       sections: [
         {
@@ -338,7 +339,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "law",
           title: "7. Contacto, ley y cambios",
           paragraphs: [
-            `Envía consultas, reclamaciones o avisos sobre esta web a ${email}. Los atendemos dentro de los plazos legales aplicables. Se aplica la ley española sin privar al consumidor de las protecciones imperativas de su país de residencia habitual cuando correspondan. La competencia judicial la determina la normativa aplicable, sin imponer los tribunales de nuestra ciudad.`,
+            `Envía consultas y reclamaciones a ${email}, y escribe a nuestro equipo de soporte en ${supportEmail} si necesitas ayuda con esta web o quieres avisarnos de un problema. Los atendemos dentro de los plazos legales aplicables. Se aplica la ley española sin privar al consumidor de las protecciones imperativas de su país de residencia habitual cuando correspondan. La competencia judicial la determina la normativa aplicable, sin imponer los tribunales de nuestra ciudad.`,
             "Los cambios se identifican por su fecha de eficacia y se aplican hacia el futuro, con el aviso legalmente necesario. No eliminan derechos adquiridos ni modifican retroactivamente una compra de producto ya realizada. Las versiones española, catalana e inglesa buscan expresar las mismas condiciones.",
           ],
         },
@@ -350,7 +351,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Política de privacitat",
       intro:
         "Com tracta GarBar la informació quan visites el nostre web corporatiu o contactes amb nosaltres. TaskFlow i Lucid Saga tenen les seves pròpies polítiques per a les aplicacions i serveis.",
-      updated: "Actualitzada el 8 de novembre de 2026",
+      updated: "Actualitzada el 13 de novembre de 2026",
       contents: "En aquesta política",
       sections: [
         {
@@ -446,7 +447,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
       title: "Termes i condicions",
       intro:
         "Condicions de visita del web corporatiu de GarBar. L’ús de TaskFlow, Lucid Saga i qualsevol producte de pagament es regeix per les condicions presentades per a aquell producte.",
-      updated: "En vigor des del 8 de novembre de 2026",
+      updated: "En vigor des del 13 de novembre de 2026",
       contents: "En aquestes condicions",
       sections: [
         {
@@ -498,7 +499,7 @@ export const policies: Record<Locale, Record<PolicyKind, PolicyDocument>> = {
           id: "law",
           title: "7. Contacte, llei i canvis",
           paragraphs: [
-            `Envia consultes, reclamacions o avisos sobre aquest web a ${email}. Els atenem dins dels terminis legals aplicables. S’aplica la llei espanyola sense privar el consumidor de les proteccions imperatives del país de residència habitual quan corresponguin. La competència judicial la determina la normativa aplicable, sense imposar els tribunals de la nostra ciutat.`,
+            `Envia consultes i reclamacions a ${email}, i escriu al nostre equip de suport a ${supportEmail} si necessites ajuda amb aquest web o vols avisar-nos d’un problema. Els atenem dins dels terminis legals aplicables. S’aplica la llei espanyola sense privar el consumidor de les proteccions imperatives del país de residència habitual quan corresponguin. La competència judicial la determina la normativa aplicable, sense imposar els tribunals de la nostra ciutat.`,
             "Els canvis s’identifiquen per la data d’eficàcia i s’apliquen cap al futur, amb l’avís legalment necessari. No eliminen drets adquirits ni modifiquen retroactivament una compra de producte ja feta. Les versions catalana, castellana i anglesa busquen expressar les mateixes condicions.",
           ],
         },

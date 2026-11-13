@@ -15,8 +15,9 @@ Privacy and terms are adapted from TaskFlow to this company's website: see `docs
 - Registered name, NIF, registered address and commercial-register entry: the company records
   already used in `Mikigb77/TaskFlowWeb`, `src/content/legal/company.json`, and
   `Mikigb77/LucidSaga_Web`, `src/content/legal/company.ts`.
-- General company contact: `info@garbar.tech`, the company mailbox used in the owner's existing
-  setup. Product-specific support remains on each product website.
+- General company contact: `garbar@garbar.tech`, and the support team: `garbar.support@garbar.tech`
+  (the owner, 13 November 2026). Product-specific support remains on each product website, with
+  each product's own addresses.
 - TaskFlow's capabilities and coming-soon status: `TaskFlowWeb/src/content/site/en.ts` and
   [its website](https://taskflow.garbar.tech). Its product card follows that website's home page
   (the "Nova" design in the Lagoon palette, chosen by the owner on 9 November 2026, in the GarBar
