@@ -19,9 +19,10 @@ export async function verifySite(base) {
     assert.match(html, new RegExp(`<html[^>]+lang="${locale}"`), path);
     assert.ok(html.includes(`rel="canonical" href="https://garbar.tech${canonical}"`), `canonical: ${path}`);
     assert.ok(html.includes('content="index, follow"'), `indexing: ${path}`);
-    assert.ok(html.includes('href="mailto:garbar@garbar.tech"'), `contact: ${path}`);
+    assert.ok(html.includes('href="mailto:info@garbar.tech"'), `contact: ${path}`);
     assert.ok(html.includes('href="mailto:garbar.support@garbar.tech"'), `support: ${path}`);
-    for (const old of ["info@garbar.tech", "main@garbar.tech"]) {
+    // garbar@ only sends the company's mail; it is not a public contact.
+    for (const old of ["garbar@garbar.tech", "main@garbar.tech"]) {
       assert.ok(!html.includes(old), `old contact ${old}: ${path}`);
     }
     assert.ok(!html.includes("chatgpt.site"), `private preview URL: ${path}`);
