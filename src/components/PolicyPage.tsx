@@ -18,7 +18,7 @@ export function PolicyPage({ locale, kind }: { locale: Locale; kind: PolicyKind 
       <h1>{document.title}</h1>
       <p className="information-intro">{document.intro}</p>
       <p className="policy-date">
-        <time dateTime="2026-11-08">{document.updated}</time>
+        <time dateTime="2026-11-13">{document.updated}</time>
       </p>
       <div className="policy-layout">
         <nav className="policy-toc" aria-label={document.contents}>
@@ -62,9 +62,20 @@ export function PolicyPage({ locale, kind }: { locale: Locale; kind: PolicyKind 
               <Arrow />
             </a>
           </div>
-          <p className="policy-contact">
-            <a href={`mailto:${company.email}`}>{company.email}</a>
-          </p>
+          <dl className="policy-contact">
+            <div>
+              <dt>{t.legal.contact}</dt>
+              <dd>
+                <a href={`mailto:${company.email}`}>{company.email}</a>
+              </dd>
+            </div>
+            <div>
+              <dt>{t.legal.support}</dt>
+              <dd>
+                <a href={`mailto:${company.supportEmail}`}>{company.supportEmail}</a>
+              </dd>
+            </div>
+          </dl>
         </div>
       </div>
     </main>

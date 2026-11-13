@@ -82,6 +82,11 @@ export default async function Page({ params }: { params: Promise<{ path?: string
     legalName: company.name,
     url: siteUrl,
     email: company.email,
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: company.supportEmail,
+    },
     taxID: company.taxId,
     address: {
       "@type": "PostalAddress",

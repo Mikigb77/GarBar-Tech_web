@@ -2277,7 +2277,20 @@ h1 em {
   margin-top: 46px;
 }
 .policy-contact {
+  display: grid;
+  gap: 16px;
   margin-top: 25px;
+}
+.policy-contact > div {
+  display: grid;
+  gap: 2px;
+}
+.policy-contact dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+.policy-contact dd {
+  overflow-wrap: anywhere;
 }
 .policy-contact a {
   color: var(--accent);
