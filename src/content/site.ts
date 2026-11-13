@@ -10,7 +10,8 @@ export const company = {
   taxId: "B56760374",
   address: "Carrer Sant Antoni Mª Claret, 24, 3ª planta, 08037 Barcelona, España",
   register: "Registre Mercantil de Barcelona · Tom 49105 · Foli 130 · Full 607875 · Inscripció 1",
-  email: "info@garbar.tech",
+  email: "garbar@garbar.tech",
+  supportEmail: "garbar.support@garbar.tech",
 };
 
 export const siteUrl = (
@@ -173,6 +174,7 @@ const en = {
     address: "Registered address",
     register: "Commercial register",
     contact: "General enquiries",
+    support: "Support",
     products: "About our products",
     productBody:
       "TaskFlow and Lucid Saga have their own websites, support contacts, terms and privacy information. Please refer to the relevant product website for information about its services.",
@@ -331,6 +333,7 @@ const es: Copy = {
     address: "Domicilio social",
     register: "Registro Mercantil",
     contact: "Consultas generales",
+    support: "Soporte",
     products: "Sobre nuestros productos",
     productBody:
       "TaskFlow y Lucid Saga cuentan con sus propias webs, contactos de soporte, condiciones e información de privacidad. Consulta la web del producto correspondiente para conocer sus servicios.",
@@ -488,6 +491,7 @@ const ca: Copy = {
     address: "Domicili social",
     register: "Registre Mercantil",
     contact: "Consultes generals",
+    support: "Suport",
     products: "Sobre els nostres productes",
     productBody:
       "TaskFlow i Lucid Saga tenen els seus propis webs, contactes de suport, condicions i informació de privacitat. Consulta el web del producte corresponent per conèixer els seus serveis.",

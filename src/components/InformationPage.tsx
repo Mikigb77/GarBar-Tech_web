@@ -36,6 +36,15 @@ export function InformationPage({ locale }: { locale: Locale }) {
             </a>
           </dd>
         </div>
+        <div>
+          <dt>{t.legal.support}</dt>
+          <dd>
+            <a href={`mailto:${company.supportEmail}`}>
+              {company.supportEmail}
+              <Arrow diagonal />
+            </a>
+          </dd>
+        </div>
       </dl>
       <section className="information-body">
         <h2>{t.legal.products}</h2>

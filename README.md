@@ -43,7 +43,9 @@ is no automatic language redirect or language cookie.
 - `design/brand/archive/g-mark-v1/`: the preserved original G logo and favicon, independent of builds.
 
 There are no analytics scripts, advertising trackers, contact forms or external font requests.
-Contact opens an email draft to `info@garbar.tech`; copying the address does not send a message.
+Contact opens an email draft to `garbar@garbar.tech`, the company's general address; support is
+`garbar.support@garbar.tech`, shown in the footer, the company information page and the privacy
+and terms pages. Copying an address does not send a message.
 Both products are presented as in development and coming soon to Android.
 
 ## Publishing
