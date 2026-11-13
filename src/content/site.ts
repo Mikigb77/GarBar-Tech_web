@@ -10,7 +10,7 @@ export const company = {
   taxId: "B56760374",
   address: "Carrer Sant Antoni Mª Claret, 24, 3ª planta, 08037 Barcelona, España",
   register: "Registre Mercantil de Barcelona · Tom 49105 · Foli 130 · Full 607875 · Inscripció 1",
-  email: "garbar@garbar.tech",
+  email: "info@garbar.tech",
   supportEmail: "garbar.support@garbar.tech",
 };
 
